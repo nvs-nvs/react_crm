@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
 import { connect } from 'react-redux';
 import HallNumberInput from '../../../components/Halls/HallInfo/HallNumberInput';
+import DateInput from '../../../HOC/DateInput';
 import HallInfoTable from '../../../components/Halls/HallInfo/HallInfoTable';
 import { onlyNumbers } from '../../../helpers/validators';
 import { bindActionCreators } from 'redux';
@@ -20,6 +21,8 @@ class HallInfo extends Component {
          }
     };
     
+    
+    
     onButtonClick = function(e) {
         let hallId = findDOMNode(this.input).value;
         if(!hallId){
@@ -28,10 +31,19 @@ class HallInfo extends Component {
         this.props.hallInfoActions.getHallInfo();
     };
     
+    onChangeHandler = function(e){
+        alert(e.target.value);
+    };
+    
+    onClick = function(e){
+        alert('asdadsad');
+    };
+    
   render() {
       return (
         <div>
-            <HallNumberInput
+            <DateInput
+                onClick = { this.onClick }
                 onKeyPres={this.onInputKeyPres}
                 ref={input=>this.input = input}
             />

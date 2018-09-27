@@ -6,7 +6,6 @@ class HallNumberInput extends Component {
         this.onKeyPres = this.props.onKeyPres.bind(this);
     }
     
-    
     render() {
         return (
             <input id="hall_info_hall_number_input"
