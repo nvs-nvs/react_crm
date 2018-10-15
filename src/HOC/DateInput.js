@@ -5,12 +5,10 @@ class DateInput extends Component {
     constructor(props){
         super(props);
     }
-   
+    
     render(){
-        const { onClick, ...propsToPass } = this.props;
         return <HallNumberInput
-            onClick = { this.onClick }
-            {...propsToPass} />
+            {...this.props} />
     }
     }
 

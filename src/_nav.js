@@ -11,16 +11,5 @@ export default {
         },
       ],
     },
-      {
-          name: 'Клиенты',
-          icon: 'icon-puzzle',
-          children: [
-              {
-                  name: 'Инфо о клиенте',
-                  url: '/clients/info',
-                  icon: 'icon-puzzle',
-              },
-          ],
-      }
   ],
 };

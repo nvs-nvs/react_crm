@@ -31,19 +31,10 @@ class HallInfo extends Component {
         this.props.hallInfoActions.getHallInfo();
     };
     
-    onChangeHandler = function(e){
-        alert(e.target.value);
-    };
-    
-    onClick = function(e){
-        alert('asdadsad');
-    };
-    
   render() {
       return (
         <div>
             <DateInput
-                onClick = { this.onClick }
                 onKeyPres={this.onInputKeyPres}
                 ref={input=>this.input = input}
             />

@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import { Route, Switch, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 import { hot } from 'react-hot-loader';
 
 import './App.css';
@@ -24,15 +25,35 @@ import { Login } from './views/Pages';
 
 class App extends Component {
   render() {
-    return (
-      <Fragment>
-        <Switch>
-          <Route exact path="/login" name="Login Page" component={Login} />
-          <Route path="/" name="Инфо о зале" component={DefaultLayout} />
-        </Switch>
-      </Fragment>
-    );
+    const { isAuthenticated, user } = this.props;
+    
+      if (!isAuthenticated) {
+          return (
+              <Fragment>
+                  <Switch>
+                      <Route exact path="/login" name="Login Page" component={Login} />
+                      <Redirect to="/login"/>
+                  </Switch>
+              </Fragment>
+          );
+      }
+      
+        return (
+          <Fragment>
+            <Switch>
+              <Route path="/" name="Инфо о зале" component={DefaultLayout} />
+              <Redirect to="/" />
+            </Switch>
+          </Fragment>
+        );
   }
 }
 
-export default hot(module)(withRouter(App));
+function mapStateToProps(state){
+    return {
+        user: state.user,
+        isAuthenticated: state.auth.isAuthenticated
+    };
+}
+
+export default hot(module)(withRouter(connect(mapStateToProps)(App)));

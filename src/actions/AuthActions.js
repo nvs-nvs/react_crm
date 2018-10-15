@@ -1,9 +1,13 @@
-import { LOGIN } from '../constants/AuthConstants';
 import axios from 'axios';
-import setAuthToken from '../helpers/setAuthToken';
+export const LOGIN = 'LOGIN';
+export const LOGOUT = 'LOGOUT';
 
 export function login(data) {
     return dispatch => {
+        dispatch({
+            type: LOGIN,
+            payload: {}
+        });
         return axios('http://slim.loc/login', {
             method: 'POST',
             headers: {
@@ -12,10 +16,17 @@ export function login(data) {
             data
         })
             .then(responce => {
-                const token = responce.data.token;
-                localStorage.setItem('token', token);
-                setAuthToken(token);
-                
-        })
+                dispatch({
+                    type:	`${LOGIN}_SUCCESS`,
+                    payload: responce
+                });
+        },
+            (error) => {
+                dispatch({
+                    type:	`${LOGIN}_FAIL`,
+                    payload: error
+                });
+            }
+            )
     }
 }

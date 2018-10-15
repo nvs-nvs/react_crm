@@ -7,13 +7,15 @@ import {applyMiddleware, combineReducers, compose, createStore} from 'redux';
 import thunk from 'redux-thunk';
 import {BrowserRouter} from 'react-router-dom';
 import hallInfoReducer from './reducers/hallInfoReducer';
+import userReducer from './reducers/userReducer';
+import authReducer from './reducers/authReducer';
 import {Provider} from 'react-redux';
-import {reduxTokenAuthReducer} from 'redux-token-auth';
-import setAuthToken from './helpers/setAuthToken';
+import axios from 'axios';
 
 const allReducers = combineReducers({
-    reduxTokenAuth: reduxTokenAuthReducer,
     hallInfo: hallInfoReducer,
+    user: userReducer,
+    auth: authReducer,
 });
 const allEnhancers = compose(
     applyMiddleware(thunk),
@@ -22,7 +24,23 @@ const allEnhancers = compose(
 
 const store = createStore(allReducers, {}, allEnhancers);
 
-setAuthToken(localStorage.token);
+const setupInterceptors = function (store) {
+    axios.interceptors.response.use(
+        response => response,
+        error => {
+            const { response: { status } } = error;
+            if (status === 401 || status === 403) {
+                localStorage.clear();
+                if (!window.location.href.split('/').includes('login')) {
+                    window.location.reload();
+                }
+            }
+            return Promise.reject(error);
+        }
+    );
+}
+
+setupInterceptors(store);
 
 ReactDOM.render(
     <Provider store={store}>
