@@ -5,6 +5,7 @@ import { findDOMNode } from 'react-dom';
 import * as authActions from '../../../actions/AuthActions';
 import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
+import {DefaultLayout} from '../../../containers';
 
 class Login extends Component {
   constructor(props){
@@ -78,4 +79,11 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(null, mapDispatchToProps)(Login);
+function mapStateToProps(state){
+  console.log(state);
+  return {
+      isAuthenticated: state
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

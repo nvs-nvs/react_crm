@@ -11,6 +11,9 @@ import userReducer from './reducers/userReducer';
 import authReducer from './reducers/authReducer';
 import {Provider} from 'react-redux';
 import axios from 'axios';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const allReducers = combineReducers({
     hallInfo: hallInfoReducer,
@@ -22,7 +25,15 @@ const allEnhancers = compose(
     window.devToolsExtension && window.devToolsExtension(),
 );
 
-const store = createStore(allReducers, {}, allEnhancers);
+const persistConfig = {
+    key: 'root',
+    storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, allReducers);
+
+const store = createStore(persistedReducer, {}, allEnhancers);
+const persistor = persistStore(store);
 
 const setupInterceptors = function (store) {
     axios.interceptors.response.use(
@@ -44,8 +55,10 @@ setupInterceptors(store);
 
 ReactDOM.render(
     <Provider store={store}>
-        <BrowserRouter>
-            <App/>
-        </BrowserRouter>
+        <PersistGate loading={null} persistor={ persistor } >
+            <BrowserRouter>
+                <App/>
+            </BrowserRouter>
+        </PersistGate>
     </Provider>, document.getElementById('root'));
 

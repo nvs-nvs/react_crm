@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 import { hot } from 'react-hot-loader';
+import { persistStore } from 'redux-persist';
 
 import './App.css';
 // Styles
