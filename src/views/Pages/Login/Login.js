@@ -17,6 +17,11 @@ class Login extends Component {
     onClick (e){
     const name = findDOMNode(this.name).value;
     const pass = findDOMNode(this.password).value;
+    if(!name || !pass){
+        this.error = true;
+        this.message = 'Укажите логин и/или пароль';
+        return;
+    }
     this.props.authActions.login({
         login: name,
         password: pass
@@ -41,9 +46,7 @@ class Login extends Component {
                             <i className="icon-user"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input
-                            ref={input => this.name = input}
-                            type="text" placeholder="Username" autoComplete="username" />
+                        <Input ref={input => this.name = input} type="text" placeholder="Username" autoComplete="username" />
                       </InputGroup>
                       <InputGroup className="mb-4">
                         <InputGroupAddon addonType="prepend">
@@ -51,9 +54,7 @@ class Login extends Component {
                             <i className="icon-lock"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input
-                            ref={input => this.password = input}
-                            type="password" placeholder="Password" autoComplete="current-password" />
+                        <Input ref={input => this.password = input} type="password" placeholder="Password"  autoComplete="current-password" />
                       </InputGroup>
                       <p className="error">{
                           this.message
@@ -85,7 +86,6 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state){
   return {
-      isAuthenticated: state,
       error: state.auth.error,
       message: state.auth.errorMessage
   };
