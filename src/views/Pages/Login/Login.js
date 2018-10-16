@@ -25,7 +25,7 @@ class Login extends Component {
     if(!name || !pass){
         this.setState({
             validateError: true,
-            message :  'Укажите логин и/или пароль'
+            message :  'Укажите логин и/или пароль',
         });
         return;
     }
@@ -75,7 +75,7 @@ class Login extends Component {
                             autoComplete="current-password" />
                       </InputGroup>
                         <p className="error">{
-                            this.props.error ? this.props.message : this.state.validateError ? this.state.message : ''
+                            this.state.validateError && this.state.message
                         }
                         </p>
                       <Row>
