@@ -9,7 +9,7 @@ class HallInfoTable extends Component {
     }
     
     render() {
-        if(this.props.clients.length != 0){
+        if(this.props.clients && this.props.clients.length != 0){
             return (
                 <table className="table table-striped">
                     <thead>

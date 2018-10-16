@@ -1,6 +1,4 @@
 import { LOGIN, LOGOUT } from '../actions/AuthActions';
-import isEmpty from 'lodash/isEmpty';
-
 const initialState = {
 
 };

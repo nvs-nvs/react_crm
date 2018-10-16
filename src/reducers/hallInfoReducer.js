@@ -1,7 +1,8 @@
 import {
     GET_HALL_INFO_REQUEST,
     GET_HALL_INFO_SUCCESS,
-} from '../constants/HallInfoConstants';
+    GET_HALL_INFO_FAIL,
+} from '../actions/HallInfoActions';
 
 const initialState = {
     clients: [],
@@ -15,6 +16,8 @@ export default function hallInfoReducer(state = initialState, action) {
             return {...state, fetching: true};
         case    GET_HALL_INFO_SUCCESS:
             return {...state, clients: action.payload.clients, hallInfo:action.payload.hall_info, fetching: false};
+        case    GET_HALL_INFO_FAIL:
+            return {...state, fetching: false};
         default:
             return state;
     }

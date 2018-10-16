@@ -27,7 +27,6 @@ import { Login } from './views/Pages';
 class App extends Component {
   render() {
     const { isAuthenticated, user } = this.props;
-    
       if (!isAuthenticated) {
           return (
               <Fragment>

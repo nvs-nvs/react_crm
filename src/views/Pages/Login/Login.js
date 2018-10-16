@@ -6,20 +6,21 @@ import * as authActions from '../../../actions/AuthActions';
 import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
 import {DefaultLayout} from '../../../containers';
+import './Login.css';
 
 class Login extends Component {
   constructor(props){
       super(props);
       this.onClick = this.onClick.bind(this);
   }
-    
+  
     onClick (e){
     const name = findDOMNode(this.name).value;
     const pass = findDOMNode(this.password).value;
-        this.props.authActions.login({
-            login: name,
-            password: pass
-        });
+    this.props.authActions.login({
+        login: name,
+        password: pass
+    });
   }
   
   render() {
@@ -54,6 +55,9 @@ class Login extends Component {
                             ref={input => this.password = input}
                             type="password" placeholder="Password" autoComplete="current-password" />
                       </InputGroup>
+                      <p className="error">{
+                          this.message
+                      }</p>
                       <Row>
                         <Col xs="6">
                           <Button
@@ -80,9 +84,10 @@ function mapDispatchToProps(dispatch) {
 }
 
 function mapStateToProps(state){
-  console.log(state);
   return {
-      isAuthenticated: state
+      isAuthenticated: state,
+      error: state.auth.error,
+      message: state.auth.errorMessage
   };
 }
 

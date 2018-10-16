@@ -28,7 +28,7 @@ class HallInfo extends Component {
         if(!hallId){
             return false;
         }
-        this.props.hallInfoActions.getHallInfo();
+        this.props.hallInfoActions.getHallInfo(hallId);
     };
     
   render() {

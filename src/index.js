@@ -37,11 +37,14 @@ const persistor = persistStore(store);
 
 const setupInterceptors = function (store) {
     axios.interceptors.response.use(
-        response => response,
+        response => {
+            return response
+        },
         error => {
             const { response: { status } } = error;
             if (status === 401 || status === 403) {
-                localStorage.clear();
+                window.localStorage.clear();
+                persistor.purge();
                 if (!window.location.href.split('/').includes('login')) {
                     window.location.reload();
                 }
