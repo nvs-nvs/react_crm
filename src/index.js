@@ -27,7 +27,8 @@ const allEnhancers = compose(
 
 const persistConfig = {
     key: 'root',
-    storage
+    storage,
+    blacklist: ['auth']
 };
 
 const persistedReducer = persistReducer(persistConfig, allReducers);

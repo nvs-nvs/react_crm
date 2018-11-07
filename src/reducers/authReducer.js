@@ -20,16 +20,16 @@ const persistConfig = {
 const authReducer = function (state = initialState, { type, payload }) {
     switch (type) {
         case PURGE:
-            return { ...state, isAuthenticated: false, isFetching: false, error: false, errorMessage: ''};
+            return { ...state, isAuthentificated: false, isFetching: false, error: false, errorMessage: ''};
         case LOGIN:
             return { ...state, isFetching: true, error: false, errorMessage: ''};
         case `${LOGIN}_SUCCESS`:
-            return { ...state, isAuthenticated: payload.data && payload.data.auth ? !isEmpty(payload.data) : false, isFetching: false, error: false, errorMessage: ''};
+            return { ...state, isAuthentificated: payload.data && payload.data.auth ? !isEmpty(payload.data) : false, isFetching: false, error: false, errorMessage: ''};
         case `${LOGIN}_FAIL`:
             localStorage.clear();
-            return { isAuthenticated: false, isFetching: false, error: true, errorMessage: payload.response.status && payload.response.status == 401 ? 'Неправильный логин и/или пароль ' : payload.message };
+            return { isAuthentificated: false, isFetching: false, error: true, errorMessage: payload.response.status && payload.response.status == 401 ? 'Неправильный логин и/или пароль ' : payload.message };
         case LOGOUT:
-            return { isAuthenticated: false, isFetching: true, error: false, errorMessage: '' };
+            return { isAuthentificated: false, isFetching: true, error: false, errorMessage: '' };
         default:
             return state;
     }
