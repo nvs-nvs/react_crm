@@ -75,7 +75,9 @@ class Login extends Component {
                             autoComplete="current-password" />
                       </InputGroup>
                         <p className="error">{
-                            this.state.validateError && this.state.message
+                            (this.state.validateError && this.state.message)
+                            ||
+                            (this.props.error && this.props.message)
                         }
                         </p>
                       <Row>

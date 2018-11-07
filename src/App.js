@@ -26,8 +26,8 @@ import { Login } from './views/Pages';
 
 class App extends Component {
   render() {
-    const { isAuthenticated, user } = this.props;
-      if (!isAuthenticated) {
+    const { isAuthentificated, user } = this.props;
+      if (!isAuthentificated) {
           return (
               <Fragment>
                   <Switch>
@@ -52,7 +52,7 @@ class App extends Component {
 function mapStateToProps(state){
     return {
         user: state.user,
-        isAuthenticated: state.auth.isAuthenticated
+        isAuthentificated: state.auth.isAuthentificated
     };
 }
 

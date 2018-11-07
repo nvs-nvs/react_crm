@@ -6,16 +6,23 @@ import { connect } from 'react-redux';
 import { AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
 import logo from '../../assets/img/brand/logo_bb_org.png'
 import sygnet from '../../assets/img/brand/logo_bb_org.png'
-
-const propTypes = {
-  children: PropTypes.node,
-};
+import {onlyNumbers} from '../../helpers/validators';
+import { logout } from '../../actions/AuthActions';
+import { bindActionCreators } from 'redux';
 
 const defaultProps = {};
 
 class DefaultHeader extends Component {
+    constructor(props){
+      super(props);
+      this.onClickHandler = this.onClickHandler.bind(this);
+    }
+    
+    onClickHandler = function(e){
+        this.props.logout();
+    };
+  
   render() {
-
     // eslint-disable-next-line
     const { children, user, ...attributes } = this.props;
     
@@ -35,14 +42,14 @@ class DefaultHeader extends Component {
             <DropdownMenu right style={{ right: 'auto' }}>
               <DropdownItem>
                 <p>Пользватель: {user.name}</p>
-                <p>ID: {user.name}</p>
+                <p>Имя: {user.name}</p>
                 <p>ID: {user.id}</p>
                 <p>email: {user.email}</p>
                 <p>Должность: {user.position}</p>
                 <p>Роль: {user.role}</p>
               </DropdownItem>
               <DropdownItem divider />
-              <DropdownItem><i className="fa fa-lock"></i>Выйти</DropdownItem>
+              <DropdownItem onClick={this.onClickHandler}><i className="fa fa-lock"></i>Выйти</DropdownItem>
             </DropdownMenu>
           </AppHeaderDropdown>
         </Nav>
@@ -51,13 +58,16 @@ class DefaultHeader extends Component {
   }
 }
 
-DefaultHeader.propTypes = propTypes;
-DefaultHeader.defaultProps = defaultProps;
-
 function mapStateToProps(state){
   return {
     user: state.user
   };
 }
 
-export default connect(mapStateToProps)(DefaultHeader);
+function mapDispatchToProps (dispatch) {
+    return {
+      logout: bindActionCreators(logout, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DefaultHeader);

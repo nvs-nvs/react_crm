@@ -32,3 +32,12 @@ export function login(data) {
             )
     }
 }
+
+export function logout(data) {
+    return dispatch => {
+        dispatch({
+            type: LOGOUT,
+            payload: {}
+        });
+    }
+}
