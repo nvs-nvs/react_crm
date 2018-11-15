@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
 import { connect } from 'react-redux';
 import HallNumberInput from '../../../components/Halls/HallInfo/HallNumberInput';
-import DateInput from '../../../HOC/DateInput';
 import HallInfoTable from '../../../components/Halls/HallInfo/HallInfoTable';
 import { onlyNumbers } from '../../../helpers/validators';
 import { bindActionCreators } from 'redux';
@@ -34,7 +33,7 @@ class HallInfo extends Component {
   render() {
       return (
         <div>
-            <DateInput
+            <HallNumberInput
                 onKeyPres={this.onInputKeyPres}
                 ref={input=>this.input = input}
             />

@@ -13,8 +13,8 @@ const HallInfo = Loadable({
 });
 
 const routes = [
-  { path: '/halls/', exact: true, name: 'Залы', component: DefaultLayout},
   { path: '/halls/info', exact: true, name: 'Инфо о зале', component: HallInfo },
+  { path: '/halls/', exact: true, name: 'Залы', component: DefaultLayout},
 ];
 
 export default routes;

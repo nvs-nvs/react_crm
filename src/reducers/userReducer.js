@@ -6,7 +6,7 @@ const initialState = {
 export default function (state = initialState, { type, payload }) {
     switch (type) {
         case `${LOGIN}_SUCCESS`:
-            return { ...state,  ...payload.data.user };
+            return { ...state,  ...payload.data.user};
         case `${LOGIN}_FAIL`:
             localStorage.clear();
             return { ...initialState };

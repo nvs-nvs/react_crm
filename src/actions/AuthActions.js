@@ -18,6 +18,7 @@ export function login(data) {
             data
         })
             .then(responce => {
+                localStorage.setItem('token', responce.data.token);
                 dispatch({
                     type:	`${LOGIN}_SUCCESS`,
                     payload: responce

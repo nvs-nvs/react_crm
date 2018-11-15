@@ -27,9 +27,9 @@ const authReducer = function (state = initialState, { type, payload }) {
             return { ...state, isAuthentificated: payload.data && payload.data.auth ? !isEmpty(payload.data) : false, isFetching: false, error: false, errorMessage: ''};
         case `${LOGIN}_FAIL`:
             localStorage.clear();
-            return { isAuthentificated: false, isFetching: false, error: true, errorMessage: payload.response.status && payload.response.status == 401 ? 'Неправильный логин и/или пароль ' : payload.message };
+            return {...state, isAuthentificated: false, isFetching: false, error: true, errorMessage: payload.response && payload.response.status == 401 ? 'Неправильный логин и/или пароль ' : payload.message};
         case LOGOUT:
-            return { isAuthentificated: false, isFetching: true, error: false, errorMessage: '' };
+            return {...state, isAuthentificated: false, isFetching: true, error: false, errorMessage: ''};
         default:
             return state;
     }

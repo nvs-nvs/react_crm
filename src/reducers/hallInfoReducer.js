@@ -3,24 +3,34 @@ import {
     GET_HALL_INFO_SUCCESS,
     GET_HALL_INFO_FAIL,
 } from '../actions/HallInfoActions';
+import storage from "redux-persist/lib/storage";
+import { persistReducer } from 'redux-persist';
 
 const initialState = {
     clients: [],
-    fetching: false,
+    isFetching: false,
     hallInfo: {}
 };
 
-export default function hallInfoReducer(state = initialState, action) {
+const persistConfig = {
+    key: 'hall_info',
+    storage,
+    blacklist: ['isFetching']
+};
+
+ const hallInfoReducer = function (state = initialState, action) {
     switch (action.type) {
         case    GET_HALL_INFO_REQUEST:
-            return {...state, fetching: true};
+            return {...state, isFetching: true};
         case    GET_HALL_INFO_SUCCESS:
-            return {...state, clients: action.payload.clients, hallInfo:action.payload.hall_info, fetching: false};
+            return {...state, clients: action.payload.data.clients, hallInfo:action.payload.data.hall_info, isFetching: false};
         case    GET_HALL_INFO_FAIL:
-            return {...state, fetching: false};
+            return {...state, isFetching: false};
         default:
             return state;
     }
     
-}
+};
+ 
+ export default persistReducer(persistConfig, hallInfoReducer);
 

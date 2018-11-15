@@ -27,8 +27,7 @@ const allEnhancers = compose(
 
 const persistConfig = {
     key: 'root',
-    storage,
-    blacklist: ['auth']
+    storage
 };
 
 const persistedReducer = persistReducer(persistConfig, allReducers);
@@ -37,6 +36,16 @@ const store = createStore(persistedReducer, {}, allEnhancers);
 const persistor = persistStore(store);
 
 const setupInterceptors = function (store) {
+    axios.interceptors.request.use(function (config) {
+        let token = localStorage.getItem('token');
+        config.headers = {...config.headers, 'X-Auth-Token':'bearer ' + token};
+        config.params = {country: 'ru'};
+        return config;
+    }, function (error) {
+        // Do something with request error
+        return Promise.reject(error);
+    });
+    
     axios.interceptors.response.use(
         response => {
             return response
