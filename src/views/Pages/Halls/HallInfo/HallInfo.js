@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
 import { connect } from 'react-redux';
-import HallNumberInput from '../../../components/Halls/HallInfo/HallNumberInput';
-import HallInfoTable from '../../../components/Halls/HallInfo/HallInfoTable';
-import { onlyNumbers } from '../../../helpers/validators';
+import HallNumberInput from '../../../../components/Halls/HallInfo/HallNumberInput';
+import HallInfoTable from '../../../../components/Halls/HallInfo/HallInfoTable';
+import { onlyNumbers } from '../../../../helpers/validators';
 import { bindActionCreators } from 'redux';
-import * as hallInfoActions from '../../../actions/HallInfoActions';
+import * as hallInfoActions from '../../../../actions/HallInfoActions';
 
 class HallInfo extends Component {
     

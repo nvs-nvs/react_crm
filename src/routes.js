@@ -8,7 +8,7 @@ function Loading() {
 }
 
 const HallInfo = Loadable({
-  loader: () => import('./views/Halls/HallInfo/HallInfo'),
+  loader: () => import('./views/Pages/Halls/HallInfo/HallInfo'),
   loading: Loading,
 });
 

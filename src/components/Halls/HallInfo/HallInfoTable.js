@@ -23,7 +23,7 @@ class HallInfoTable extends Component {
                     </tr>
                     </thead>
                     <tbody>
-                    { this.props.clients.map(value => <HallInfoTr client={value} key={value.id}/>) }
+                    { this.props.clients.map((value, i) => <HallInfoTr client={value} key={i}/>) }
                     </tbody>
                 </table>
             );
