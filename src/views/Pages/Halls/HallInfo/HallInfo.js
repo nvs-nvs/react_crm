@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
 import { connect } from 'react-redux';
-import HallNumberInput from '../../../../components/Halls/HallInfo/HallNumberInput';
-import HallInfoTable from '../../../../components/Halls/HallInfo/HallInfoTable';
+import HallNumberInput from './components/HallNumberInput';
+import HallInfoTable from './components/HallInfoTable';
 import { onlyNumbers } from '../../../../helpers/validators';
 import { bindActionCreators } from 'redux';
 import * as hallInfoActions from '../../../../actions/HallInfoActions';
@@ -16,7 +16,7 @@ class HallInfo extends Component {
     
     onInputKeyPres = function(e){
          if(!onlyNumbers(e.key)) {
-             e.preventDefault()
+             e.preventDefault();
          }
     };
     
@@ -27,7 +27,7 @@ class HallInfo extends Component {
         if(!hallId){
             return false;
         }
-        this.props.hallInfoActions.getHallInfo(hallId);
+        this.props.getHallInfo(hallId);
     };
     
   render() {
@@ -49,7 +49,8 @@ class HallInfo extends Component {
 
 function	mapDispatchToProps(dispatch) {
     return {
-        hallInfoActions: bindActionCreators(hallInfoActions, dispatch)
+        getHallInfo: bindActionCreators(hallInfoActions.getHallInfo, dispatch),
+        changeHallId: bindActionCreators(hallInfoActions.changeHallId, dispatch),
     }
 }
 

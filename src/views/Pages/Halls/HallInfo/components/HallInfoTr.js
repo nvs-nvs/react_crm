@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import HallInfoCss from './HallInfoCss.css';
 
 class HallInfoTr extends Component {
     render() {

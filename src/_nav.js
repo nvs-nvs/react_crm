@@ -11,5 +11,16 @@ export default {
         },
       ],
     },
+    {
+        name: 'Сервисы',
+        icon: 'icon-shield',
+        children: [
+            {
+                name: 'Clients',
+                url: '/services/clients',
+                icon: 'icon-shield',
+            },
+        ],
+    },
   ],
 };

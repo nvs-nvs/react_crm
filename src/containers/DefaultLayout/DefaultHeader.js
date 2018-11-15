@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Badge, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink } from 'reactstrap';
+import { DropdownItem, DropdownMenu, DropdownToggle, Nav, NavLink } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -9,8 +9,6 @@ import sygnet from '../../assets/img/brand/logo_bb_org.png'
 import {onlyNumbers} from '../../helpers/validators';
 import { logout } from '../../actions/AuthActions';
 import { bindActionCreators } from 'redux';
-
-const defaultProps = {};
 
 class DefaultHeader extends Component {
     constructor(props){

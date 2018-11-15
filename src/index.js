@@ -39,7 +39,7 @@ const setupInterceptors = function (store) {
     axios.interceptors.request.use(function (config) {
         let token = localStorage.getItem('token');
         config.headers = {...config.headers, 'X-Auth-Token':'bearer ' + token};
-        config.params = {country: 'ru'};
+        config.params = {...config.params, country: 'ru'};
         return config;
     }, function (error) {
         // Do something with request error
