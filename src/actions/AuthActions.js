@@ -4,13 +4,13 @@ export const LOGOUT = 'LOGOUT';
 
 export function login(data) {
     return dispatch => {
-        
+
         dispatch({
             type: LOGIN,
             payload: {}
         });
-        
-        return axios('http://slim.loc/login', {
+
+        return axios('http://localhost:5000/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -21,8 +21,7 @@ const allReducers = combineReducers({
     auth: authReducer,
 });
 const allEnhancers = compose(
-    applyMiddleware(thunk),
-    window.devToolsExtension && window.devToolsExtension(),
+	applyMiddleware(thunk)
 );
 
 const persistConfig = {
@@ -39,7 +38,7 @@ const setupInterceptors = function (store) {
     axios.interceptors.request.use(function (config) {
         let token = localStorage.getItem('token');
         config.headers = {...config.headers, 'X-Auth-Token':'bearer ' + token};
-        config.params = {...config.params, country: 'ru'};
+        config.data = {...config.data, country: 'ru'};
         return config;
     }, function (error) {
         // Do something with request error

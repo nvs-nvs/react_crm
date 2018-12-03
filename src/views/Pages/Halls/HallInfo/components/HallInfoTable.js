@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import HallInfoTr from './HallInfoTr';
 import HallInfoCss from './HallInfoCss.css';
+import ReactTable from "react-table";
+import "react-table/react-table.css";
 
 class HallInfoTable extends Component {
     constructor(props){
@@ -11,21 +13,22 @@ class HallInfoTable extends Component {
     render() {
         if(this.props.clients && this.props.clients.length != 0){
             return (
-                <table className="table table-striped">
-                    <thead>
-                    <tr>
-                        <th scope="col hall_info_td_center">
-                            Номер Устройства
-                        </th>
-                        <th scope="col hall_info_td_center">
-                            Mac-Адрес
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    { this.props.clients.map((value, i) => <HallInfoTr client={value} key={i}/>) }
-                    </tbody>
-                </table>
+               <ReactTable
+          data={
+			  {
+				 "firstName":"dsd" 
+			  }
+		  }
+          columns={[
+            {
+              Header: "Name",
+              accessor: "firstName"
+            }
+            
+          ]}
+          defaultPageSize={10}
+          className="-striped -highlight"
+        />
             );
         } else {
             return '';
