@@ -11,28 +11,48 @@ class HallInfoTable extends Component {
     }
     
     render() {
-        if(this.props.clients && this.props.clients.length != 0){
+//        if(this.props.clients && this.props.clients.length != 0){
             return (
-               <ReactTable
-          data={
-			  {
-				 "firstName":"dsd" 
-			  }
-		  }
-          columns={[
-            {
-              Header: "Name",
-              accessor: "firstName"
-            }
-            
-          ]}
-          defaultPageSize={10}
-          className="-striped -highlight"
-        />
+
+                <ReactTable
+                    data={[
+                        {
+                        
+                        }
+                    ]}
+                    columns={[
+                        {
+                            Header: "Name",
+                            accessor: "firstName"
+                        },
+                        {
+                            Header: "Last Name",
+                            accessor: "lastName"
+                        }
+                    ]}
+                    className="-striped -highlight"
+                />
+                /*
+                <table className="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col hall_info_td_center">
+                            Номер Устройства
+                        </th>
+                        <th scope="col hall_info_td_center">
+                            Mac-Адрес
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    { this.props.clients.map((value, i) => <HallInfoTr client={value} key={i}/>) }
+                    </tbody>
+                </table>
+                */
             );
-        } else {
-            return '';
-        }
+//        } else {
+//            return '';
+//        }
     }
 }
 
