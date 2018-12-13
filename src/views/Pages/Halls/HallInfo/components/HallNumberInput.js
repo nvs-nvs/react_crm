@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Input, FormFeedback, FormGroup, Label } from 'reactstrap';
 
 class HallNumberInput extends Component {
     constructor(props){
@@ -8,12 +9,26 @@ class HallNumberInput extends Component {
     }
     
     render() {
-        const { hall_id } = this.props;
+        const { hall_id, name, errorMessage } = this.props;
+        let invalid = false;
+        if(errorMessage.length >0){
+            invalid = true;
+        }
         return (
-            <input
-                value={hall_id}
-                onKeyPress = {this.onKeyPres}
-                className="form-control" type="text"/>
+            <FormGroup>
+                <Label>Номер зала</Label>
+                <Input
+                    invalid={invalid}
+                    onKeyPress = {this.onKeyPres}
+                    onChange = {this.props.onHallIdInputChangeHandler}
+                    name={name}
+                    type="text"
+                    value = {this.props.hallIdInput}
+                />
+                <FormFeedback>
+                    {errorMessage.length == 0 ? "" : errorMessage}
+                </FormFeedback>
+            </FormGroup>
         );
     }
 }

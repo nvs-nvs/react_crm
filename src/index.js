@@ -21,24 +21,33 @@ const allReducers = combineReducers({
     auth: authReducer,
 });
 const allEnhancers = compose(
-	applyMiddleware(thunk)
+    applyMiddleware(thunk),
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 );
 
-const persistConfig = {
-    key: 'root',
-    storage
-};
-
-const persistedReducer = persistReducer(persistConfig, allReducers);
-
-const store = createStore(persistedReducer, {}, allEnhancers);
+const store = createStore(
+    allReducers,
+    {},
+    allEnhancers
+);
 const persistor = persistStore(store);
 
 const setupInterceptors = function (store) {
+    
+    const country = {
+        'country' : 'ru'
+    };
+    
     axios.interceptors.request.use(function (config) {
         let token = localStorage.getItem('token');
-        config.headers = {...config.headers, 'X-Auth-Token':'bearer ' + token};
-        config.data = {...config.data, country: 'ru'};
+        config.headers = {
+            ...config.headers,
+            'X-Auth-Token':token
+        };
+        config.params = {
+            ...config.params,
+            ...country,
+        };
         return config;
     }, function (error) {
         // Do something with request error

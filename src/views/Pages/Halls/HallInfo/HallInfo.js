@@ -6,24 +6,32 @@ import HallInfoTable from './components/HallInfoTable';
 import { onlyNumbers } from '../../../../helpers/validators';
 import { bindActionCreators } from 'redux';
 import * as hallInfoActions from '../../../../actions/HallInfoActions';
+import { FormGroup, Form, Row, Col, Input, Label, Button } from 'reactstrap';
 
 class HallInfo extends Component {
     
     constructor(props){
         super(props);
         this.onButtonClick = this.onButtonClick.bind(this);
+        this.state = {
+            hallIdInput: ''
+        };
     }
     
     onInputKeyPres = function(e){
          if(!onlyNumbers(e.key)) {
              e.preventDefault();
+             return false;
          }
     };
     
-    
+    onHallIdInputChangeHandler(e){
+        this.setState({hallIdInput: e.target.value})
+    }
     
     onButtonClick = function(e) {
-        let hallId = findDOMNode(this.input).value;
+        let hallId = this.state.hallIdInput;
+        console.log(hallId);
         if(!hallId){
             return false;
         }
@@ -32,17 +40,38 @@ class HallInfo extends Component {
     
   render() {
       return (
-        <div>
-            <HallNumberInput
-                onKeyPres={this.onInputKeyPres}
-                ref={input=>this.input = input}
-            />
-            <button
-                onClick={this.onButtonClick}
-                className = "btn btn-success">Отправить
-            </button>
-            <HallInfoTable />
-        </div>
+            <Form>
+                <Row form>
+                    <Col md={3}>
+                            <HallNumberInput
+                                errorMessage = {""}
+                                name={"hallInfo__hall_number"}
+                                onKeyPres={this.onInputKeyPres}
+                                onChange = {this.onHallIdInputChangeHandler}
+                                ref={input=>this.input = input}
+                                value={this.state.hallIdInput}
+                            />
+                    </Col>
+                    <Col md={3}>
+                        <FormGroup check>
+                            <Input type="checkbox" name="active" id="hallInfo__active_checkbox"/>
+                            <Label for="hallInfo__active_checkbox" check>Активные за 6ч</Label>
+                        </FormGroup>
+                    </Col>
+                    <Col md={3}>
+                        <FormGroup check>
+                            <Input type="checkbox" name="active" id="hallInfo__vip_checkbox"/>
+                            <Label for="hallInfo__vip_checkbox" check>VIP</Label>
+                        </FormGroup>
+                    </Col>
+                </Row>
+                <Button
+                    onClick={this.onButtonClick}
+                    className = "btn btn-success">Искать
+                </Button>
+                
+                <HallInfoTable />
+            </Form>
     );
   }
 }
@@ -50,7 +79,6 @@ class HallInfo extends Component {
 function	mapDispatchToProps(dispatch) {
     return {
         getHallInfo: bindActionCreators(hallInfoActions.getHallInfo, dispatch),
-        changeHallId: bindActionCreators(hallInfoActions.changeHallId, dispatch),
     }
 }
 

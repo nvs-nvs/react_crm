@@ -77,7 +77,7 @@ class Login extends Component {
                         <p className="error">{
                             (this.state.validateError && this.state.message)
                             ||
-                            (this.props.error && this.props.message)
+                            this.props.message
                         }
                         </p>
                       <Row>
@@ -108,7 +108,7 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state){
   return {
       error: state.auth.error,
-      message: state.auth.errorMessage
+      message: state.auth.message
   };
 }
 
