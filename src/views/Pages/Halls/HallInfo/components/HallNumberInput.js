@@ -5,13 +5,11 @@ import { Input, FormFeedback, FormGroup, Label } from 'reactstrap';
 class HallNumberInput extends Component {
     constructor(props){
         super(props);
-        this.onKeyPres = this.props.onKeyPres.bind(this);
     }
     
     render() {
-        const { hall_id, name, errorMessage } = this.props;
         let invalid = false;
-        if(errorMessage.length >0){
+        if(this.props.errorMessage.length >0){
             invalid = true;
         }
         return (
@@ -19,24 +17,18 @@ class HallNumberInput extends Component {
                 <Label>Номер зала</Label>
                 <Input
                     invalid={invalid}
-                    onKeyPress = {this.onKeyPres}
-                    onChange = {this.props.onHallIdInputChangeHandler}
-                    name={name}
+                    onKeyPress = {this.props.onKeyPress}
+                    onChange = {this.props.onChange}
+                    name={this.props.name}
                     type="text"
                     value = {this.props.hallIdInput}
                 />
                 <FormFeedback>
-                    {errorMessage.length == 0 ? "" : errorMessage}
+                    {this.props.errorMessage.length == 0 ? "" : this.props.errorMessage}
                 </FormFeedback>
             </FormGroup>
         );
     }
 }
 
-function mapStateToProps(state){
-    return {
-        hall_id: state.hallInfo.hall_id
-    };
-}
-
-export default connect(mapStateToProps)(HallNumberInput);
+export default HallNumberInput;

@@ -13,6 +13,7 @@ class HallInfo extends Component {
     constructor(props){
         super(props);
         this.onButtonClick = this.onButtonClick.bind(this);
+        this.onHallIdInputChangeHandler = this.onHallIdInputChangeHandler.bind(this);
         this.state = {
             hallIdInput: ''
         };
@@ -25,17 +26,16 @@ class HallInfo extends Component {
          }
     };
     
-    onHallIdInputChangeHandler(e){
+    onHallIdInputChangeHandler = function(e){
         this.setState({hallIdInput: e.target.value})
-    }
+    };
     
     onButtonClick = function(e) {
         let hallId = this.state.hallIdInput;
-        console.log(hallId);
         if(!hallId){
             return false;
         }
-        this.props.getHallInfo(hallId);
+        this.props.getHallInfo(parseInt(hallId));
     };
     
   render() {
@@ -46,7 +46,7 @@ class HallInfo extends Component {
                             <HallNumberInput
                                 errorMessage = {""}
                                 name={"hallInfo__hall_number"}
-                                onKeyPres={this.onInputKeyPres}
+                                onKeyPress={this.onInputKeyPres}
                                 onChange = {this.onHallIdInputChangeHandler}
                                 ref={input=>this.input = input}
                                 value={this.state.hallIdInput}
