@@ -27,7 +27,7 @@ class HallInfo extends Component {
     };
     
     onHallIdInputChangeHandler = function(e){
-        this.setState({hallIdInput: e.target.value})
+        this.setState({hallIdInput: e.target.value});
     };
     
     onButtonClick = function(e) {
