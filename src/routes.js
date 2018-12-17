@@ -8,12 +8,12 @@ function Loading() {
 }
 
 const HallInfo = Loadable({
-  loader: () => import('./views/Pages/Halls/HallInfo/HallInfo'),
+  loader: () => import('./views/Halls/Halls/Halls'),
   loading: Loading,
 });
 
 const Clients = Loadable({
-    loader: () => import('./views/Pages/Services/Clients/Clients'),
+    loader: () => import('./views/Services/Clients/Clients'),
     loading: Loading,
 });
 

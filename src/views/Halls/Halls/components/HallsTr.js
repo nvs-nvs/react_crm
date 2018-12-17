@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class HallInfoTr extends Component {
+class HallsTr extends Component {
     render() {
         const { mac_addr, id} = this.props.client;
         return (
@@ -16,4 +16,4 @@ class HallInfoTr extends Component {
     }
 }
 
-export default HallInfoTr;
+export default HallsTr;

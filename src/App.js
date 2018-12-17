@@ -20,7 +20,7 @@ import './scss/style.css'
 // Containers
 import { DefaultLayout } from './containers';
 // Pages
-import { Login } from './views/Pages';
+import { Login } from './views/index';
 
 // import { renderRoutes } from 'react-router-config';
 

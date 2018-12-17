@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import HallInfoTr from './HallInfoTr';
-import HallInfoCss from './HallInfoCss.css';
+import HallsTr from './HallsTr';
+import HallInfoCss from './HallsCss.css';
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 
-class HallInfoTable extends Component {
+class HallsTable extends Component {
     constructor(props){
         super(props);
     }
@@ -62,4 +62,4 @@ function mapStateToProps(state){
     }
     
 }
-export default connect(mapStateToProps)(HallInfoTable);
+export default connect(mapStateToProps)(HallsTable);

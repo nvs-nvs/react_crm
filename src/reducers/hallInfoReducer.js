@@ -13,7 +13,7 @@ const initialState = {
 };
 
 const persistConfig = {
-    key: 'hall_info',
+    key: 'halls',
     storage,
     blacklist: ['isFetching'],
 };

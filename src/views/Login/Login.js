@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
-import { login } from '../../../actions/AuthActions';
+import { login } from '../../actions/AuthActions';
 import { findDOMNode } from 'react-dom';
-import * as authActions from '../../../actions/AuthActions';
+import * as authActions from '../../actions/AuthActions';
 import {bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
-import {DefaultLayout} from '../../../containers';
+import {DefaultLayout} from '../../containers/index';
 import './Login.css';
 
 class Login extends Component {
