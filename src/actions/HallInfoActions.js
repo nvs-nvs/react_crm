@@ -5,8 +5,7 @@ export const GET_HALL_INFO_REQUEST = 'GET_HALL_INFO_REQUEST';
 export const GET_HALL_INFO_SUCCESS = 'GET_HALL_INFO_SUCCESS';
 export const GET_HALL_INFO_FAIL = 'GET_HALL_INFO_FAIL';
 
-export function getHallInfo(hallId)
-{
+export function getHallInfo(hallId, isActive, vip){
     return (dispatch) => {
         dispatch({
             type: GET_HALL_INFO_REQUEST,
@@ -19,7 +18,9 @@ export function getHallInfo(hallId)
                 'Content-Type': 'application/json',
             },
             data: {
-                hall_id: hallId
+                hall_id: hallId,
+                isActive,
+                vip
             },
         }).then(response => {
                 dispatch({

@@ -10,13 +10,11 @@ import * as hallInfoActions from '../../../actions/HallInfoActions';
 import {Field, Form} from 'react-final-form';
 import createDecorator from 'final-form-focus';
 import { Button } from "reactstrap";
+import HallsTable from './components/HallsTable';
 
 const focusOnError = createDecorator();
-const checkboxStyle = {
-    marginLeft: '35px',
-};
-const divStyle = {
-    display: 'inline',
+const checkBoxStyle={
+  marginLeft: '25px'
 };
 
 class Halls extends Component{
@@ -29,9 +27,11 @@ class Halls extends Component{
         if (!values.halls__hall_input) {
             return false;
         }
-        console.log(values);
+        
         this.props.getHallInfo(
-            parseInt(values.halls__hall_input)
+            parseInt(values.halls__hall_input),
+            values.halls__last_checkbox,
+            values.halls__vip_checkbox
             );
     };
     
@@ -45,10 +45,9 @@ class Halls extends Component{
         };
     }
     
-  
-    
     render(){
         return (
+            <div>
             <Form
                 onSubmit={this.onButtonClick}
                 decorators={[
@@ -62,7 +61,6 @@ class Halls extends Component{
                     <form onSubmit={handleSubmit}>
                         <div className="form-row">
                             <div className="form-group col-md-2">
-                                <label className="control-label">Зал</label>
                                 <Field
                                     name="halls__hall_input"
                                     validate={composeValidators(onlyNumbers,
@@ -75,7 +73,8 @@ class Halls extends Component{
                                     }}
                                 >
                                     {({input, meta}) => (
-                                        <div style={divStyle} className={meta.active ? 'active' : ''}>
+                                        <div className={meta.active ? 'active' : ''}>
+                                            <label className="control-label">Зал</label>
                                             {meta.error && meta.touched && <small className="error">{meta.error}</small>}
                                             <input className="form-control" {...input}/>
                                         </div>
@@ -83,45 +82,57 @@ class Halls extends Component{
                                 </Field>
                             </div>
     
-                            <div style={checkboxStyle} className="form-group col-md-2">
-                                <label>Активные за 12ч</label>
+                            <div  className="form-check">
+                                <label className="control-label">Активные за 12ч</label>
                                     <Field
                                         name="halls__last_checkbox"
+                                        type="checkbox"
                                     >
                                         {
                                             ({input})=>(
-                                                <div>
-                                                    <input type={"checkbox"} className="form-control" {...input}/>
+                                                <div  style={checkBoxStyle} className="form-check">
+                                                    <input type="checkbox" className="form-check-input" {...input}/>
                                                 </div>
                                             )
                                         }
                                     </Field>
-                                </div>
+                            </div>
     
+                            <div  className="form-check">
+                                <label className="control-label">VIP</label>
+                                <Field
+                                    name="halls__vip_checkbox"
+                                    type="checkbox"
+                                >
+                                    {
+                                        ({input})=>(
+                                            <div  className="form-check">
+                                                <input type="checkbox" className="form-check-input" {...input}/>
+                                            </div>
+                                        )
+                                    }
+                                </Field>
+                            </div>
+                            
                             
                         </div>
-    
-                        <div className="form-row form-check col-md-3">
-                            <div className="form-group">
-                            <Button
-                                type="submit"
-                                className="btn btn-xs btn-success"
-                                disabled={submitting}
-                            >Искать
-                            </Button>
-                            </div>
-                        </div>
-                        
+                        <Button
+                            type="submit"
+                            className="btn btn-success"
+                            disabled={submitting}
+                        >Искать
+                        </Button>
                     </form>
                 )
                 }
             </Form>
+            <HallsTable/>
+            </div>
         );
     }
 }
 
-function mapDispatchToProps(dispatch)
-{
+function mapDispatchToProps(dispatch){
     return {
         getHallInfo: bindActionCreators(hallInfoActions.getHallInfo, dispatch),
     };

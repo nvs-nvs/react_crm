@@ -12,12 +12,6 @@ const initialState = {
     hallInfo: {},
 };
 
-const persistConfig = {
-    key: 'halls',
-    storage,
-    blacklist: ['isFetching'],
-};
-
 const hallInfoReducer = function(state = initialState, action) {
     switch (action.type) {
         case    GET_HALL_INFO_REQUEST:
@@ -30,7 +24,7 @@ const hallInfoReducer = function(state = initialState, action) {
             return {
                 ...state,
                 clients: action.payload.data.clients,
-                hallInfo: action.payload.data.hall_info,
+                hallInfo: action.payload.data.hallInfo,
                 isFetching: false,
             };
             
@@ -46,5 +40,5 @@ const hallInfoReducer = function(state = initialState, action) {
     
 };
 
-export default persistReducer(persistConfig, hallInfoReducer);
+export default hallInfoReducer;
 

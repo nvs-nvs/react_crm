@@ -1,9 +1,22 @@
 // Here you can add other styles
 body {
-  background-color: #efe7d5 !important;
+  background-color: #fff;
+  padding-bottom: 0;
 }
 
 small.error {
   color: #a94442;
   margin-left: 30px;
+}
+
+.nav-dropdown-items a.nav-link {
+  padding-left: 35px;
+}
+
+.rt-th {
+  overflow: visible !important;
+}
+
+.ReactTable .rt-thead.-filters input.form-control, .ReactTable .rt-thead.-filters select {
+  height: 28px;
 }

@@ -1,58 +1,181 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import HallsTr from './HallsTr';
 import HallInfoCss from './HallsCss.css';
 import ReactTable from "react-table";
 import "react-table/react-table.css";
+import {getTkKindForRender, getInfoKindInString} from '../../../../helpers/common';
+import moment from 'moment';
+import {ru} from 'moment/locale/ru';
+import DateTimePickerCustom from '../../../../hoc/DateTimePickerCustom/DateTimePickerCustom';
+
 
 class HallsTable extends Component {
     constructor(props){
         super(props);
     }
     
+    renderEditableKind(cellInfo) {
+        return (
+            <div
+                style={{ backgroundColor: "#fafafa" }}
+                contentEditable
+                suppressContentEditableWarning
+                onBlur={e => {
+                    const data = [...this.state.data];
+                    data[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
+                    this.setState({ data });
+                }}
+                dangerouslySetInnerHTML={{
+                    __html: this.state.data[cellInfo.index][cellInfo.column.id]
+                }}
+            />
+        );
+    }
+    
     render() {
-//        if(this.props.clients && this.props.clients.length != 0){
             return (
-
                 <ReactTable
-                    data={[
-                        {
-                        
-                        }
-                    ]}
+                    noDataText="Нет данных"
+                    data={this.props.clients}
+                    filterable
                     columns={[
                         {
-                            Header: "Name",
-                            accessor: "firstName"
+                            Header: "Id",
+                            accessor: "cli_id",
                         },
                         {
-                            Header: "Last Name",
-                            accessor: "lastName"
+                            Header: "Mac",
+                            accessor: "mac_addr"
+                        },
+                        {
+                            Header: "Ip",
+                            accessor: "ip"
+                        },
+                        {
+                            Header: "Зал",
+                            accessor: "hall_id"
+                        },
+                        {
+                            Header: "Тип",
+                            id: 'kind',
+                            accessor: d => getTkKindForRender(d.kind)
+                            
+                        },
+                        {
+                            Header: "Info-Kind",
+                            id: "info_kind",
+                            accessor: d => getInfoKindInString(d.info_kind)
+                        },
+                        {
+                            Header: "Vip",
+                            id: "vip",
+                            accessor: "vip",
+                            Cell: ({ value }) => (value) ? 'Да' : 'Нет',
+                            Filter: ({ filter, onChange }) => (
+                                <select
+                                    onChange = {
+                                        (event) => onChange(event.target.value)
+                                    }
+                                    value={filter ? filter.value : "all"}
+                                >
+                                    <option value="all"></option>
+                                    <option value="true">Да</option>
+                                    <option value="false">Нет</option>
+                                </select>
+                            ),
+                            filterMethod: (filter, row) => {
+                                if (filter.value === "all") {
+                                    return true;
+                                }
+                                if (filter.value === 'true') {
+                                    return row[filter.id] === 1;
+                                }
+                                return row[filter.id] === 0;
+                            },
+                        },
+                        {
+                            Header: "Загрузка",
+                            id: "boot_dttm",
+                            Filter: ({ filter, onChange }) =>
+                                <DateTimePickerCustom
+                                    onChange = {onChange}
+                                />
+                            ,
+                            filterMethod: (filter, row) => {
+                                const rowMomentValue = moment(row[filter.id], 'DD-MM-YYYY');
+                               if(
+                                   filter.value.isValid()
+                                   &&
+                                   rowMomentValue.isValid()
+                                   &&
+                                   (filter.value.format("DD-MM-YYYY") === rowMomentValue.format("DD-MM-YYYY"))
+                               ){
+                                  return true;
+                               }
+                                return false;
+                            },
+                            accessor: row => {
+                                let time = moment(row.boot_dttm);
+                                if (time.isValid()) {
+                                    return moment(row.boot_dttm).local().format("DD-MM-YYYY h:mm:ss");
+                                }
+                                return '';
+                            }
+                        },
+                        {
+                            Header: "Активность",
+                            id: "activ_dttm",
+                            accessor: row => {
+                                let time = moment(row.activ_dttm);
+                                if (time.isValid()) {
+                                    return moment(row.activ_dttm).local().format("DD-MM-YYYY hh:mm:ss");
+                                }
+                                return '';
+                            }
+                        },
+                        {
+                            Header: "BlackList",
+                            id: "blis_dttm",
+                            accessor: row => {
+                                let time = moment(row.blis_dttm);
+                                if (time.isValid()) {
+                                    return moment(row.blis_dttm).local().format("DD-MM-YYYY hh:mm:ss");
+                                }
+                                return '';
+                            }
+                        },
+                        {
+                            Header: "Шаблон",
+                            accessor: "template_name"
+                        },
+                        {
+                            Header: "Версия",
+                            accessor: "soft_version"
+                        },
+                        {
+                            Header: "Перезагрузить",
+                            accessor: "sdf",
+                            filterable: false
+                        },
+                        {
+                            Header: "Ping",
+                            accessor: "sd",
+                            filterable: false
+                        },
+                        {
+                            Header: "ScreenShot",
+                            accessor: "s",
+                            filterable: false
                         }
                     ]}
                     className="-striped -highlight"
+                    defaultPageSize={ 100 }
+                    style={{
+                        textAlign: 'center',
+                        height: "700px"
+                    }}
                 />
-                /*
-                <table className="table table-striped">
-                    <thead>
-                    <tr>
-                        <th scope="col hall_info_td_center">
-                            Номер Устройства
-                        </th>
-                        <th scope="col hall_info_td_center">
-                            Mac-Адрес
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    { this.props.clients.map((value, i) => <HallInfoTr client={value} key={i}/>) }
-                    </tbody>
-                </table>
-                */
             );
-//        } else {
-//            return '';
-//        }
     }
 }
 

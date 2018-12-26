@@ -1,0 +1,10 @@
+.datetime_picker_close_btn {
+    position: absolute;
+    z-index: 100000;
+    left: 215px;
+    top: 32px;
+}
+
+.rdtPicker {
+    padding-top: 28px;
+}
