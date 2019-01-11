@@ -42,7 +42,6 @@ class DateTimePickerCustom extends Component{
                 dateFormat="DD-MM-YYYY"
                 timeFormat={false}
                 locale="ru"
-                
             />
         );
     }

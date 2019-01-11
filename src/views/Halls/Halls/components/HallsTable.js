@@ -7,29 +7,16 @@ import {getTkKindForRender, getInfoKindInString} from '../../../../helpers/commo
 import moment from 'moment';
 import {ru} from 'moment/locale/ru';
 import DateTimePickerCustom from '../../../../hoc/DateTimePickerCustom/DateTimePickerCustom';
-
+import SelectTemplate from './SelectTemplate';
 
 class HallsTable extends Component {
     constructor(props){
         super(props);
+        this.renderEditableTemplate = this.renderEditableTemplate.bind(this);
     }
     
-    renderEditableKind(cellInfo) {
-        return (
-            <div
-                style={{ backgroundColor: "#fafafa" }}
-                contentEditable
-                suppressContentEditableWarning
-                onBlur={e => {
-                    const data = [...this.state.data];
-                    data[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
-                    this.setState({ data });
-                }}
-                dangerouslySetInnerHTML={{
-                    __html: this.state.data[cellInfo.index][cellInfo.column.id]
-                }}
-            />
-        );
+    renderEditableTemplate(cellInfo) {
+        return <SelectTemplate cellInfo={cellInfo}/>;
     }
     
     render() {
@@ -125,6 +112,23 @@ class HallsTable extends Component {
                         {
                             Header: "Активность",
                             id: "activ_dttm",
+                            Filter: ({ filter, onChange }) =>
+                                <DateTimePickerCustom
+                                    onChange = {onChange}
+                                />,
+                            filterMethod: (filter, row) => {
+                                const rowMomentValue = moment(row[filter.id], 'DD-MM-YYYY');
+                                if(
+                                    filter.value.isValid()
+                                    &&
+                                    rowMomentValue.isValid()
+                                    &&
+                                    (filter.value.format("DD-MM-YYYY") === rowMomentValue.format("DD-MM-YYYY"))
+                                ){
+                                    return true;
+                                }
+                                return false;
+                            },
                             accessor: row => {
                                 let time = moment(row.activ_dttm);
                                 if (time.isValid()) {
@@ -136,6 +140,23 @@ class HallsTable extends Component {
                         {
                             Header: "BlackList",
                             id: "blis_dttm",
+                            Filter: ({ filter, onChange }) =>
+                                <DateTimePickerCustom
+                                    onChange = {onChange}
+                                />,
+                            filterMethod: (filter, row) => {
+                                const rowMomentValue = moment(row[filter.id], 'DD-MM-YYYY');
+                                if(
+                                    filter.value.isValid()
+                                    &&
+                                    rowMomentValue.isValid()
+                                    &&
+                                    (filter.value.format("DD-MM-YYYY") === rowMomentValue.format("DD-MM-YYYY"))
+                                ){
+                                    return true;
+                                }
+                                return false;
+                            },
                             accessor: row => {
                                 let time = moment(row.blis_dttm);
                                 if (time.isValid()) {
@@ -146,7 +167,8 @@ class HallsTable extends Component {
                         },
                         {
                             Header: "Шаблон",
-                            accessor: "template_name"
+                            accessor: "template_name",
+                            Cell: this.renderEditableTemplate
                         },
                         {
                             Header: "Версия",

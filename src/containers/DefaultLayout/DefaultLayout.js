@@ -37,7 +37,8 @@ class DefaultLayout extends Component {
             <AppSidebarFooter />
             <AppSidebarMinimizer />
           </AppSidebar>
-          <main className="main">
+          <main
+              className="main">
             <AppBreadcrumb appRoutes={routes}/>
             <Container fluid>
               <Switch>
