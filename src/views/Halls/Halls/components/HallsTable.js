@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import HallInfoCss from './HallsCss.css';
 import ReactTable from "react-table";
 import "react-table/react-table.css";
-import {getTkKindForRender, getInfoKindInString} from '../../../../helpers/common';
+import {kindToText, infoKindToText} from '../../../../helpers/common';
 import moment from 'moment';
 import {ru} from 'moment/locale/ru';
 import DateTimePickerCustom from '../../../../hoc/DateTimePickerCustom/DateTimePickerCustom';
-import SelectTemplate from './SelectTemplate';
+import CommonSelectTemplate from './CommonSelectTemplate';
 
 class HallsTable extends Component {
     constructor(props){
@@ -16,12 +16,16 @@ class HallsTable extends Component {
     }
     
     renderEditableTemplate(cellInfo) {
-        return <SelectTemplate cellInfo={cellInfo}/>;
+        return <CommonSelectTemplate
+            table={this.table}
+            cellInfo={cellInfo}
+        />;
     }
     
     render() {
             return (
                 <ReactTable
+                    ref={(table)=>{this.table = table}}
                     noDataText="Нет данных"
                     data={this.props.clients}
                     filterable
@@ -45,13 +49,13 @@ class HallsTable extends Component {
                         {
                             Header: "Тип",
                             id: 'kind',
-                            accessor: d => getTkKindForRender(d.kind)
+                            accessor: d => kindToText(d.kind)
                             
                         },
                         {
                             Header: "Info-Kind",
                             id: "info_kind",
-                            accessor: d => getInfoKindInString(d.info_kind)
+                            accessor: d => d.info_kind ? infoKindToText(d.info_kind) : ''
                         },
                         {
                             Header: "Vip",
@@ -104,7 +108,7 @@ class HallsTable extends Component {
                             accessor: row => {
                                 let time = moment(row.boot_dttm);
                                 if (time.isValid()) {
-                                    return moment(row.boot_dttm).local().format("DD-MM-YYYY h:mm:ss");
+                                    return moment(row.boot_dttm).local().format("DD-MM-YYYY hh:mm:ss");
                                 }
                                 return '';
                             }

@@ -9,7 +9,7 @@ class TemplateDiv extends Component{
     render(){
             return <div
                 onDoubleClick={this.props.onEdit}
-                className={"hall_info__div_template"}>{this.props.cellInfo.value}</div>;
+                className={"hall_info__div_template"}>{this.props.cellInfo.value ? this.props.cellInfo.value : ''}</div>;
         
     }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@coreui/coreui-free-react-admin-template",
-  "version": "2.0.9",
+  "version": "2.1.3",
   "description": "CoreUI React Open Source Bootstrap 4 Admin Template",
   "author": "Łukasz Holeczek",
   "homepage": "https://coreui.io",
@@ -12,36 +12,36 @@
     "url": "git@github.com:coreui/coreui-free-react-admin-template.git"
   },
   "dependencies": {
-    "@coreui/coreui": "^2.0.4",
-    "@coreui/coreui-plugin-chartjs-custom-tooltips": "^1.2.0",
+    "@coreui/coreui": "^2.1.5",
     "@coreui/icons": "0.3.0",
-    "@coreui/react": "^2.0.5",
+    "@coreui/react": "^2.1.3",
     "axios": "^0.18.0",
-    "chart.js": "^2.7.2",
+    "bootstrap": "^4.2.1",
     "classnames": "^2.2.6",
-    "core-js": "^2.5.7",
-    "date-fns": "^1.30.1",
-    "enzyme": "^3.5.0",
-    "enzyme-adapter-react-16": "^1.3.1",
+    "core-js": "^2.6.1",
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.7.1",
     "final-form": "^4.11.0",
     "final-form-focus": "^1.1.0",
-    "flag-icon-css": "^3.0.0",
+    "flag-icon-css": "^3.2.1",
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.11",
+    "moment": "^2.23.0",
     "prop-types": "^15.6.2",
-    "react": "^16.4.2",
-    "react-chartjs-2": "^2.7.2",
+    "react": "^16.7.0",
+    "react-app-polyfill": "^0.2.0",
     "react-datetime": "^2.16.3",
-    "react-dom": "^16.4.2",
+    "react-dom": "^16.7.0",
     "react-final-form": "^4.0.2",
     "react-hot-loader": "^4.3.6",
     "react-loadable": "^5.5.0",
     "react-redux": "^5.0.7",
-    "react-router-config": "^1.0.0-beta.4",
+    "react-router-config": "^4.4.0-beta.6",
     "react-router-dom": "^4.3.1",
     "react-table": "^6.8.6",
-    "react-test-renderer": "^16.4.2",
-    "reactstrap": "^6.4.0",
+    "react-test-renderer": "^16.7.0",
+    "reactjs-popup": "^1.3.2",
+    "reactstrap": "^7.0.2",
     "redux": "^4.0.0",
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
@@ -52,19 +52,34 @@
     "babel-jest": "^23.4.2",
     "node-sass-chokidar": "^1.3.0",
     "npm-run-all": "^4.1.3",
-    "react-scripts": "^1.1.5"
+    "react-scripts": "2.1.3"
   },
   "scripts": {
-    "build-css": "node-sass-chokidar --include-path ./node_modules ./src/scss -o ./src/scss",
-    "watch-css": "npm run build-css && node-sass-chokidar --include-path ./node_modules ./src/scss -o ./src/scss --watch --recursive",
-    "start-js": "react-scripts start",
-    "start": "npm-run-all -p watch-css start-js",
-    "build-js": "react-scripts build",
-    "build": "npm-run-all build-css build-js",
-    "test": "react-scripts test --env=jsdom",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "test:cov": "react-scripts test --coverage",
+    "test:debug": "react-scripts --inspect-brk test --runInBand",
     "eject": "react-scripts eject"
   },
   "bugs": {
     "url": "https://github.com/coreui/coreui-free-react-admin-template/issues"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 9",
+    "not op_mini all"
+  ],
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!**/*index.js",
+      "!src/serviceWorker.js",
+      "!src/polyfill.js"
+    ]
   }
 }

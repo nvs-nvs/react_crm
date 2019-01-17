@@ -18,7 +18,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 const allReducers = combineReducers({
     hallInfo: hallInfoReducer,
     user: userReducer,
-    auth: authReducer,
+    auth: authReducer
 });
 const allEnhancers = compose(
     applyMiddleware(thunk),

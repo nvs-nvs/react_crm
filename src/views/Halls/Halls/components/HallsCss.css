@@ -1,3 +1,15 @@
 .hall_info_td_center {
     text-align: center;
 }
+
+.update_btn {
+    margin-right: 10px;
+}
+
+.hall_info__div_template {
+    min-height: 100%
+}
+
+#hall_info__form {
+    margin-bottom: 10px;
+}

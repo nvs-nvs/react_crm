@@ -11,6 +11,7 @@ import {Field, Form} from 'react-final-form';
 import createDecorator from 'final-form-focus';
 import { Button } from "reactstrap";
 import HallsTable from './components/HallsTable';
+import Popup from 'reactjs-popup';
 
 const focusOnError = createDecorator();
 const checkBoxStyle={
@@ -19,8 +20,18 @@ const checkBoxStyle={
 
 class Halls extends Component{
     
+    constructor(props){
+        super(props);
+        this.onButtonClick = this.onButtonClick.bind(this);
+        this.onHallIdInputChangeHandler = this.onHallIdInputChangeHandler.bind(
+            this);
+        this.state = {
+            hallIdInput: '',
+        };
+    }
+    
     onHallIdInputChangeHandler = function(e) {
-        this.setState({hallIdInput: e.target.value});
+        this.setState(...this.state, {hallIdInput: e.target.value});
     };
     
     onButtonClick = function(values) {
@@ -35,19 +46,16 @@ class Halls extends Component{
             );
     };
     
-    constructor(props){
-        super(props);
-        this.onButtonClick = this.onButtonClick.bind(this);
-        this.onHallIdInputChangeHandler = this.onHallIdInputChangeHandler.bind(
-            this);
-        this.state = {
-            hallIdInput: '',
-        };
-    }
-    
     render(){
         return (
             <div>
+                <Popup
+                    open={this.props.error}
+                >
+                    <div className="pop_up_custom_body">
+                        {this.props.message}
+                    </div>
+                </Popup>
             <Form
                 onSubmit={this.onButtonClick}
                 decorators={[
@@ -58,7 +66,7 @@ class Halls extends Component{
                 }}
             >
                 {({handleSubmit, values, submitting}) => (
-                    <form onSubmit={handleSubmit}>
+                    <form id={'hall_info__form'} onSubmit={handleSubmit}>
                         <div className="form-row">
                             <div className="form-group col-md-2">
                                 <Field
@@ -126,10 +134,20 @@ class Halls extends Component{
                 )
                 }
             </Form>
-            <HallsTable/>
+                {!this.props.isFetching ? <HallsTable/> :
+                    <div className="spinner-border text-danger"></div>
+                }
             </div>
         );
     }
+}
+
+function mapStateToProps(state){
+    return {
+        error: state.hallInfo.error,
+        message: state.hallInfo.message,
+        isFetching: state.hallInfo.isFetching
+    };
 }
 
 function mapDispatchToProps(dispatch){
@@ -138,4 +156,4 @@ function mapDispatchToProps(dispatch){
     };
 }
 
-export default connect(null, mapDispatchToProps)(Halls);
+export default connect(mapStateToProps, mapDispatchToProps)(Halls);
