@@ -3,30 +3,18 @@ import { connect } from 'react-redux';
 import { FormGroup, Input } from 'reactstrap';
 import axios from 'axios/index';
 import {config} from '../../../../config';
-import {bindActionCreators} from 'redux';
-import * as hallInfoActions from '../../../../actions/HallInfoActions';
-import { textToInfoKind, textToKind } from '../../../../helpers/common';
 
 class SelectTemplateInput extends Component{
     constructor(props){
         super(props);
         this.state = {
-            error:false,
-            message:'',
-            open:false,
             templates: [],
-            isChanged: false,
             isFetching: false,
-            currentValue: this.props.cellInfo.value ? this.props.cellInfo.value : '',
-            initValue: this.props.cellInfo.value ? this.props.cellInfo.value : '',
         };
     }
     
-    onExit = (e) => {
-        this.props.onExit();
-    };
-    
     componentDidMount(){
+        this.props.onInit();
         this.setState({...this.state, isFetching: true});
         axios(`${config.api_url}/api/templates/getAllTemplate`, {
             method: 'GET',
@@ -42,40 +30,16 @@ class SelectTemplateInput extends Component{
             });
     }
     
-    onUpdate = (e) => {
-        if (this.state.currentValue === this.state.initValue){
-            this.props.deleteSelect();
-            return false;
+    componentWillUpdate = prevProps => {
+        console.log('sd');
+        if (this.props.error !== prevProps.error) {
+            this.props.onExit();
         }
-        this.props.hallInfoUpdate(
-            {
-                cli_id: this.props.cellInfo.row.cli_id,
-                mac_addr: this.props.cellInfo.row.mac_addr,
-                ip: this.props.cellInfo.row.ip,
-                hall_id: this.props.cellInfo.row.hall_id,
-                kind: textToKind(this.props.cellInfo.row.kind),
-                info_kind: textToInfoKind(this.props.cellInfo.row.info_kind),
-                vip: this.props.cellInfo.row.vip,
-                boot_dttm: this.props.cellInfo.row.boot_dttm,
-                activ_dttm: this.props.cellInfo.row.activ_dttm,
-                blist: this.props.cellInfo.row.blist,
-                gs_id: this.props.cellInfo.row.gs_id,
-                permission: this.props.cellInfo.row.permission,
-                template_name: this.state.currentValue
-            }, this.props.cellInfo.index);
-//            if(!this.props.error){
-//                this.props.cellInfo.value = this.state.currentValue;
-//            }
-//            this.props.deleteSelect();
-    };
-    
-    onChange = (e) => {
-        this.setState({...this.state, currentValue: e.target.value});
     };
     
     render(){
         const templates = this.state.templates.map((item, index) => {
-            let selected = (this.state.initValue === item.template_name) ? 'selected' : '';
+            let selected = (this.props.initValue === item.template_name) ? 'selected' : '';
             return (
                 <option key={item.template_name} value={item.template_name}>{item.template_name}</option>
             );
@@ -92,8 +56,8 @@ class SelectTemplateInput extends Component{
                 <div>
                     <FormGroup>
                         <Input
-                            value = {this.state.currentValue}
-                            onChange={this.onChange}
+                            value = {this.props.currentValue}
+                            onChange={this.props.onChange}
                             className={"hall_info__select_template"}
                             ref={(select) => { this.nameSelect = select; }}
                             type="select">
@@ -101,8 +65,8 @@ class SelectTemplateInput extends Component{
                         </Input>
                     </FormGroup>
                     <div>
-                        <button className={"btn btn-success btn-sm update_btn"} onClick={this.onUpdate}>v</button>
-                        <button className={"btn btn-danger btn-sm"} onClick={this.onExit}>x</button>
+                        <button className={"btn btn-success btn-sm update_btn"} onClick={this.props.onUpdate}>v</button>
+                        <button className={"btn btn-danger btn-sm"} onClick={this.props.onExit}>x</button>
                     </div>
                 </div>
             );
@@ -110,10 +74,4 @@ class SelectTemplateInput extends Component{
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        hallInfoUpdate: bindActionCreators(hallInfoActions.hallInfoUpdate, dispatch),
-    }
-}
-
-export default connect(null, mapDispatchToProps)(SelectTemplateInput);
+export default SelectTemplateInput;

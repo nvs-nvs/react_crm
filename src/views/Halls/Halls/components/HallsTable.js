@@ -17,7 +17,6 @@ class HallsTable extends Component {
     
     renderEditableTemplate(cellInfo) {
         return <CommonSelectTemplate
-            table={this.table}
             cellInfo={cellInfo}
         />;
     }
@@ -25,7 +24,6 @@ class HallsTable extends Component {
     render() {
             return (
                 <ReactTable
-                    ref={(table)=>{this.table = table}}
                     noDataText="Нет данных"
                     data={this.props.clients}
                     filterable
