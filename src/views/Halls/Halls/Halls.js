@@ -4,7 +4,7 @@ import {
     composeValidators,
     onlyNumbers,
     required,
-} from '../../../helpers/validators';
+} from '../../../helpers/validatorsFinalForm';
 import {bindActionCreators} from 'redux';
 import * as hallInfoActions from '../../../actions/HallInfoActions';
 import {Field, Form} from 'react-final-form';

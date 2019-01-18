@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
 import logo from '../../assets/img/brand/logo_bb_org.png'
 import sygnet from '../../assets/img/brand/logo_bb_org.png'
-import {onlyNumbers} from '../../helpers/validators';
+import {onlyNumbers} from '../../helpers/validatorsFinalForm';
 import { logout } from '../../actions/AuthActions';
 import { bindActionCreators } from 'redux';
 

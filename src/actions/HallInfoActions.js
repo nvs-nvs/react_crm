@@ -40,33 +40,3 @@ export function getHallInfo(hallId, isActive, vip){
             });
     };
 }
-
-export function hallInfoUpdate(updatedRow, index){
-    return (dispatch) => {
-        dispatch({
-            type: HALL_INFO_UPDATE_REQUEST,
-            payload: {isUpdating: true},
-        });
-        
-        return axios(`${config.api_url}/api/halls/update`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            data: {
-                updatedRow
-            },
-        }).then(response => {
-                dispatch({
-                    type: HALL_INFO_UPDATE_SUCCESS,
-                    payload: {response, updatedRow, index},
-                });
-            },
-            (error) => {
-                dispatch({
-                    type: HALL_INFO_UPDATE_FAIL,
-                    payload: error
-                });
-            });
-    };
-}

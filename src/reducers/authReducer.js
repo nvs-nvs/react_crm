@@ -57,7 +57,7 @@ const authReducer = function(state = initialState, {type, payload}) {
                 error: true,
                 message: payload.response && (payload.response.status === 401 || payload.response.status === 400)
                     ? payload.response.data.message
-                    : 'NetWork Error',
+                    : 'Нет связи с сервером',
             };
             
         default:
