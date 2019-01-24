@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Datetime from 'react-datetime';
 import '../../assets/datetime.css';
 import './DateTimePickerCustom.css';
+import {Input} from "reactstrap";
 
 class DateTimePickerCustom extends Component{
     constructor(props){
@@ -16,6 +17,7 @@ class DateTimePickerCustom extends Component{
             <Datetime
                 renderInput = {
                     (props, openCalendar, closeCalendar) => {
+
                         const clear = (e) => {
                             props.onChange({target: {value: ''}});
                         };
@@ -34,13 +36,26 @@ class DateTimePickerCustom extends Component{
                
                 onBlur = {
                     (date) => {
-                        this.props.onChange(date);
-                        this.setState({display: 'none'});
+
+                        if(this.props.name != undefined && this.props.name != ""){
+
+                            this.props.updateData(date, this.props.name, this.props.dateFormat);
+
+                        } else {
+                            this.props.onChange(date);
+                        }
+
+                        this.setState({
+                            display: 'none',
+                        });
+                        
                     }
                 }
                 inputProps={{readOnly: true}}
-                dateFormat="DD-MM-YYYY"
-                timeFormat={false}
+                dateFormat={this.props.dateFormat ? this.props.dateFormat : "DD-MM-YYYY"}
+                timeFormat={this.props.timeFormat ? this.props.timeFormat : false}
+                defaultValue={this.props.defaultValue ? this.props.defaultValue : ''}
+                name={this.props.name ? this.props.name : ''}
                 locale="ru"
             />
         );

@@ -6,10 +6,21 @@
     margin-right: 10px;
 }
 
-.hall_info__div_template {
-    height: 100%
-}
-
 #hall_info__form {
     margin-bottom: 10px;
+}
+
+.hall_info_inputs {
+    width: 150px;
+ }
+
+#hall_info__find_btn {
+    margin-top: 27px;
+}
+
+#hall_info__hall_number_span {
+    padding: 3px;
+    background-color: #ff5151;
+    border-radius: 5px;
+    border: 1px solid #ff5151;
 }

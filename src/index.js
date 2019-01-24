@@ -9,6 +9,7 @@ import {BrowserRouter} from 'react-router-dom';
 import hallInfoReducer from './reducers/hallInfoReducer';
 import userReducer from './reducers/userReducer';
 import authReducer from './reducers/authReducer';
+import clientInfoReducer from './reducers/ClientInfoReducer';
 import {Provider} from 'react-redux';
 import axios from 'axios';
 import { persistStore, persistReducer } from 'redux-persist';
@@ -18,7 +19,8 @@ import { PersistGate } from 'redux-persist/integration/react';
 const allReducers = combineReducers({
     hallInfo: hallInfoReducer,
     user: userReducer,
-    auth: authReducer
+    auth: authReducer,
+    client: clientInfoReducer
 });
 const allEnhancers = compose(
     applyMiddleware(thunk),

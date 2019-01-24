@@ -4,18 +4,31 @@ import { FormGroup, Input } from 'reactstrap';
 import axios from 'axios/index';
 import {config} from '../../../../../config';
 import Popup from 'reactjs-popup';
-import { onlyNumbers } from '../../../../../helpers/validators';
+import { kindToText, getInfoKindsForStore } from '../../../../../helpers/common';
 
-class IpInput extends Component{
+class InfoKindInput extends Component{
     constructor(props){
         super(props);
         this.state = {
+            store: getInfoKindsForStore(),
             error:false,
             message:'',
         };
     }
     
+    componentDidMount(){
+        if(!this.props.currentValue){
+           this.props.onInit();
+        }
+    }
+    
     render(){
+        const combo = this.state.store.map((item, index, array) => {
+            return (
+                <option key={`${index}`} value={item.value}>{item.name}</option>
+            );
+        });
+        
         return (
             <div>
                 <Popup open={this.state.error}>
@@ -25,7 +38,8 @@ class IpInput extends Component{
                     <Input
                         value = {this.props.currentValue}
                         onChange={this.props.onChange}
-                        type="text">
+                        type="select">
+                        {combo}
                     </Input>
                 </FormGroup>
                 <div>
@@ -37,4 +51,4 @@ class IpInput extends Component{
     }
 }
 
-export default IpInput;
+export default InfoKindInput;

@@ -6,6 +6,15 @@ const onlyNumbers = (value) => {
     return undefined;
 };
 
+const floatNumbers = (value) => {
+    let regex = /^[0-9.]*$/;
+    if(value){
+        return regex.test(value) ? undefined : 'Допустимы только числа: целые и десятичные!';
+    }
+    return undefined;
+};
+
+
 const required = (value) => {
     return value ? undefined : 'Заполните поле!';
 };
@@ -21,5 +30,6 @@ export {
     composeValidators,
     onlyNumbers,
     required,
+    floatNumbers
 }
 

@@ -31,7 +31,6 @@ class VipInput extends Component{
                     <Input
                         value = {this.props.currentValue}
                         onChange={this.props.onChange}
-                        className={"hall_info__select_template"}
                         type="select">
                         {vips}
                     </Input>

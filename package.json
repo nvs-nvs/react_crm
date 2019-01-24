@@ -26,6 +26,7 @@
     "flag-icon-css": "^3.2.1",
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.11",
+    "match-sorter": "^2.3.0",
     "moment": "^2.23.0",
     "prop-types": "^15.6.2",
     "react": "^16.7.0",

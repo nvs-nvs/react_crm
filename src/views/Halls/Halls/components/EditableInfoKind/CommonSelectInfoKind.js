@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import SelectTemplateInput from './SelectTemplateInput';
-import { textToInfoKind, textToKind } from '../../../../../helpers/common';
+import InfoKindInput from './InfoKindInput';
+import {
+    getInfoKindsForStore,
+    infoKindToText,
+} from '../../../../../helpers/common';
 import {config} from '../../../../../config';
 import axios from 'axios/index';
 import Popup from 'reactjs-popup';
 
-class CommonSelectTemplate extends Component{
+class CommonSelectInfoKind extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -19,23 +22,27 @@ class CommonSelectTemplate extends Component{
         };
     }
     
-    onEdit = e => this.setState({edit: true});
+    onEdit = e => this.setState({
+        edit: true,
+        initValue: this.props.cellInfo.value,
+        currentValue: this.props.cellInfo.value,
+    });
     
     editFinished = e => this.setState({
         edit: false,
         currentValue: this.state.initValue
     });
     
-    onInit = () => {
+    onInit = (e) => {
+        const initValues = getInfoKindsForStore();
         this.setState({
             ...this.state,
-            currentValue: this.props.cellInfo.value ? this.props.cellInfo.value : '',
-            initValue: this.props.cellInfo.value ? this.props.cellInfo.value : '',
+            currentValue: initValues[0].value
         });
     };
     
     onChange = (e) => {
-        this.setState({...this.state, currentValue: e.target.value});
+        this.setState({...this.state, currentValue: parseInt(e.target.value)});
     };
     
     onUpdate = (e) => {
@@ -44,14 +51,13 @@ class CommonSelectTemplate extends Component{
             return false;
         }
         this.setState({...this.state, isUpdating : true});
-        
         axios(`${config.api_url}/api/halls/update`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             data: {
-                updatedRow: {...this.props.getRow(this.props.cellInfo), template_name : this.state.currentValue}
+                updatedRow: {...this.props.getRow(this.props.cellInfo), info_kind : this.state.currentValue}
             },
         }).then(response => {
                 this.setState({
@@ -77,23 +83,30 @@ class CommonSelectTemplate extends Component{
             return <div className="spinner-border text-danger"></div>
         }
         else if (this.state.edit){
-            return <SelectTemplateInput
-                    onUpdate={this.onUpdate}
-                    onChange={this.onChange}
-                    cellInfo = {this.props.cellInfo}
-                    initValue={this.state.initValue}
-                    currentValue={this.state.currentValue}
-                    onInit={this.onInit}
-                    editFinished = {this.editFinished }
-                />
+            return <div>
+                        <Popup open={this.state.error}>
+                            <div className="pop_up_custom_body">{this.state.message}</div>
+                        </Popup>
+                        <InfoKindInput
+                            onInit={this.onInit}
+                            onUpdate={this.onUpdate}
+                            onChange={this.onChange}
+                            cellInfo = {this.props.cellInfo}
+                            initValue={this.state.initValue}
+                            currentValue={this.state.currentValue}
+                            editFinished = {this.editFinished }
+                        />
+            </div>
         } else {
             return (
                 <div className={"empty_editable_item"}>
                     <Popup open={this.state.error}>
                         <div className="pop_up_custom_body">{this.state.message}</div>
                     </Popup>
-                    <div className={"empty_editable_item"} onDoubleClick={this.onEdit}>
-                        {this.props.cellInfo.value ? this.props.cellInfo.value: ''}
+                    <div
+                        className={"empty_editable_item"}
+                        onDoubleClick={this.onEdit}>
+                        {infoKindToText(this.props.cellInfo.value)}
                     </div>
                 </div>
             )
@@ -107,4 +120,4 @@ function mapStateToProps (state){
     });
 };
 
-export default CommonSelectTemplate;
+export default CommonSelectInfoKind;

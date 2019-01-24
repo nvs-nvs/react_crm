@@ -3,11 +3,7 @@ import { connect } from 'react-redux';
 import HallInfoCss from './HallsCss.css';
 import ReactTable from "react-table";
 import "react-table/react-table.css";
-import {
-    kindToText,
-    infoKindToText,
-    textToInfoKind, textToKind,
-} from '../../../../helpers/common';
+import {kindToText, infoKindToText, textToInfoKind, textToKind, getInfoKindsForStore,getKindsForStore} from '../../../../helpers/common';
 import moment from 'moment';
 import {ru} from 'moment/locale/ru';
 import DateTimePickerCustom from '../../../../hoc/DateTimePickerCustom/DateTimePickerCustom';
@@ -15,10 +11,19 @@ import CommonSelectTemplate from './EditableTemplate/CommonSelectTemplate';
 import CommonVipInput from './EditableVip/CommonVipInput';
 import CommonIpInput from './EditableiIp/CommonIpInput';
 import CommonSelectKind from './EditableKind/CommonSelectKind';
+import CommonSelectInfoKind from './EditableInfoKind/CommonSelectInfoKind';
+import matchSorter from 'match-sorter';
+import {config} from '../../../../config';
+import axios from 'axios/index';
 
 class HallsTable extends Component {
     constructor(props){
         super(props);
+        this.renderEditableInfoKind = this.renderEditableInfoKind.bind(this);
+        this.renderEditableIp = this.renderEditableIp.bind(this);
+        this.renderEditableKind = this.renderEditableKind.bind(this);
+        this.renderEditableVip = this.renderEditableVip.bind(this);
+        this.renderEditableTemplate = this.renderEditableTemplate.bind(this);
         this.state = {
             table: {
                 data: this.props.clients,
@@ -43,13 +48,65 @@ class HallsTable extends Component {
                     {
                         Header: "Тип",
                         id:'kind',
-                        accessor: d => kindToText(d.kind),
+                        accessor: 'kind',
                         Cell: this.renderEditableKind,
+                        Filter: ({ filter, onChange }) => {
+                            const infoKinds = getKindsForStore().map((item, index) => {
+                                return (
+                                    <option key={item.value} value={item.name}>{item.name}</option>
+                                );
+                            });
+        
+                            let kindsWithFirstEmpty = [<option  value="all" key={'hall_info__kind_filter_first_empty_value'}></option>, ...infoKinds];
+        
+                            return <select
+                                onChange = {
+                                    (event) => onChange(event.target.value)
+                                }
+                                value={filter ? filter.value : "all"}
+                            >
+                                {kindsWithFirstEmpty}
+                            </select>
+                        },
+                        filterMethod: (filter, row) => {
+                            if (filter.value === "all") {
+                                return true;
+                            }
+                            return row[filter.id] === textToKind(filter.value);
+                        },
                     },
                     {
                         Header: "Info-Kind",
-                        id: "info_kind",
-                        accessor: d => d.info_kind ? infoKindToText(d.info_kind) : ''
+                        id:'info_kind',
+                        accessor: 'info_kind',
+                        Cell: this.renderEditableInfoKind,
+                        Filter: ({ filter, onChange }) => {
+                            const infoKinds = getInfoKindsForStore().map((item, index) => {
+                                return (
+                                    <option key={item.value} value={item.name}>{item.name}</option>
+                                    );
+                            });
+    
+                            let infoKindsWithFirstEmpty = [<option  value="all" key={'hall_info__info_kind_filter_first_empty_value'}></option>, ...infoKinds];
+                            
+                            return <select
+                                onChange = {
+                                    (event) => onChange(event.target.value)
+                                }
+                                value={filter ? filter.value : "all"}
+                            >
+                                {infoKindsWithFirstEmpty}
+                            </select>
+                        },
+                        filterMethod: (filter, row) => {
+                            if (filter.value === "all") {
+                                return true;
+                            }
+                            if (!row[filter.id]) {
+                                return false;
+                            }
+                            return row[filter.id] === textToInfoKind(filter.value);
+                        },
                     },
                     {
                         Header: "Vip",
@@ -192,25 +249,60 @@ class HallsTable extends Component {
         };
     }
     
-    renderEditableKind = (cellInfo) => {
-        return <CommonSelectKind updateTable={this.updateTable} cellInfo={cellInfo} />;
+    getRow = (cellInfo) => {
+        return {
+            cli_id: cellInfo.row.cli_id,
+            mac_addr: cellInfo.row.mac_addr,
+            ip: cellInfo.row.ip,
+            kind: cellInfo.row.kind,
+            info_kind: cellInfo.row.info_kind,
+            vip: cellInfo.row.vip,
+            template_name: cellInfo.row.template_name ? cellInfo.row.template_name : '',
+            soft_version: cellInfo.row.soft_version,
+        }
     };
     
-    renderEditableTemplate = (cellInfo) => {
-        return <CommonSelectTemplate updateTable={this.updateTable} cellInfo={cellInfo} />;
+    renderEditableKind(cellInfo) {
+        return <CommonSelectKind
+            getRow={this.getRow}
+            updateTable={this.updateTable}
+            cellInfo={cellInfo} />;
     };
     
-    renderEditableVip = (cellInfo) => {
-        return <CommonVipInput updateTable={this.updateTable} cellInfo={cellInfo} />
+    renderEditableInfoKind(cellInfo){
+        return <CommonSelectInfoKind
+            getRow={this.getRow}
+            updateTable={this.updateTable}
+            cellInfo={cellInfo} />;
+    };
+    
+    renderEditableTemplate(cellInfo){
+        return <CommonSelectTemplate
+            getRow={this.getRow}
+            updateTable={this.updateTable}
+            cellInfo={cellInfo} />;
+    };
+    
+    renderEditableVip(cellInfo){
+        return <CommonVipInput
+            updateTable={this.updateTable}
+            getRow={this.getRow}
+            cellInfo={cellInfo} />
     };
     
     renderEditableIp = (cellInfo) => {
-        return <CommonIpInput updateTable={this.updateTable} cellInfo={cellInfo} />
+        return <CommonIpInput
+            getRow={this.getRow}
+            updateTable={this.updateTable}
+            cellInfo={cellInfo}
+        />
     };
     
-    updateTable = (row, index) => {
+    updateTable = (value, cellInfo) => {
         let newData = [...this.state.table.data];
-        newData[index] = {...newData[index], ...row};
+        let newValue = {};
+        newValue[cellInfo.column.id] = value;
+        newData[cellInfo.index] = {...newData[cellInfo.index], ...newValue};
         this.setState({
             table: {
                 columns: this.state.table.columns,
@@ -225,6 +317,8 @@ class HallsTable extends Component {
                     noDataText="Нет данных"
                     data={this.state.table.data}
                     filterable
+                    contentEditable
+                    suppressContentEditableWarning
                     columns={this.state.table.columns}
                     className="-striped -highlight"
                     defaultPageSize={ 100 }

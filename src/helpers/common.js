@@ -52,6 +52,30 @@ const kindToText = (kind) => {
     }
 };
 
+const getInfoKindsForStore = () => {
+    return [
+        {value: TV1_BB1, name: TV1_BB1_TEXT},
+        {value: TV1_BB2, name: TV1_BB2_TEXT},
+        {value: TV3_BB1, name: TV3_BB1_TEXT},
+        {value: TV3_BB2, name: TV3_BB2_TEXT},
+        {value: MULTI_JP, name: MULTI_JP_TEXT},
+        {value: TV6_RACE, name: TV6_RACE_TEXT},
+        {value: TOP_GROUP, name: TOP_GROUP_TEXT},
+        {value: TOPHALLS, name: TOPHALLS_TEXT},
+        {value: JP_BINGO37, name: JP_BINGO37_TEXT},
+    ];
+};
+
+const getKindsForStore = () => {
+    return [
+        {value: GAME, name: GAME_TEXT},
+        {value: POS, name: POS_TEXT},
+        {value: INFO, name: INFO_TEXT},
+        {value: INFO_WIN, name: INFO_WIN_TEXT},
+        {value: INFO_KIOSK, name: INFO_KIOSK_TEXT},
+    ];
+};
+
 const textToKind = (text) => {
     switch (text) {
         case GAME_TEXT:
@@ -89,6 +113,10 @@ const infoKindToText = (infoKind) => {
             return TOPHALLS_TEXT;
         case JP_BINGO37:
             return JP_BINGO37_TEXT;
+        case 0:
+            return '';
+        case null:
+            return '';
         default:
             return infoKind;
     }
@@ -176,5 +204,7 @@ export {
     infoKindToText,
     textToKind,
     textToInfoKind,
-    str_ireplace
+    str_ireplace,
+    getInfoKindsForStore,
+    getKindsForStore
 }

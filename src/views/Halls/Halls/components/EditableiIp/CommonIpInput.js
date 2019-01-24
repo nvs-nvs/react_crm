@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import IpDiv from './IpDiv';
 import IpInput from './IpInput';
 import { textToInfoKind, textToKind } from '../../../../../helpers/common';
 import {config} from '../../../../../config';
@@ -14,24 +13,18 @@ class CommonIpInput extends Component{
             edit: false,
             error:false,
             message:'',
+            initValue: this.props.cellInfo.value,
             isUpdating: false,
-            currentValue: this.props.cellInfo.value ? this.props.cellInfo.value : '',
-            initValue: this.props.cellInfo.value ? this.props.cellInfo.value : '',
-            row : {
-                cli_id: this.props.cellInfo.row.cli_id,
-                mac_addr: this.props.cellInfo.row.mac_addr,
-                ip: this.props.cellInfo.row.ip,
-                kind: textToKind(this.props.cellInfo.row.kind),
-                info_kind: textToInfoKind(this.props.cellInfo.row.info_kind),
-                vip: this.props.cellInfo.row.vip,
-                template_name: this.props.cellInfo.row.template_name,
-                soft_version: this.props.cellInfo.row.soft_version,
-                soft_version: this.props.cellInfo.row.soft_version,
-            }
+            currentValue: this.props.cellInfo.value,
+            row: this.props.getRow(this.props.cellInfo)
         };
     }
     
-    onEdit = e => this.setState({edit: true});
+    onEdit = e => this.setState({
+        initValue: this.props.cellInfo.value,
+        currentValue: this.props.cellInfo.value,
+        edit: true
+    });
     
     editFinished = e => this.setState({
         edit: false,
@@ -63,7 +56,7 @@ class CommonIpInput extends Component{
                 'Content-Type': 'application/json',
             },
             data: {
-                updatedRow: {...this.state.row, ip : this.state.currentValue}
+                updatedRow: {...this.props.getRow(this.props.cellInfo), ip : this.state.currentValue}
             },
         }).then(response => {
                 this.setState({
@@ -72,7 +65,7 @@ class CommonIpInput extends Component{
                     isUpdating : false,
                     initValue: this.state.currentValue,
                 });
-                this.props.updateTable({...this.state.row, ip : this.state.currentValue}, this.props.cellInfo.index);
+                this.props.updateTable(this.state.currentValue, this.props.cellInfo);
             },
             (error) => {
                 this.setState({
@@ -90,34 +83,29 @@ class CommonIpInput extends Component{
             return <div className="spinner-border text-danger"></div>
         }
         else if (this.state.edit){
-            return <IpInput
-                onUpdate={this.onUpdate}
-                onChange={this.onChange}
-                cellInfo = {this.props.cellInfo}
-                initValue={this.state.initValue}
-                currentValue={this.state.currentValue}
-                editFinished = {this.editFinished }
-            />
+            return <div>
+                    <IpInput
+                    onUpdate={this.onUpdate}
+                    onChange={this.onChange}
+                    cellInfo = {this.props.cellInfo}
+                    initValue={this.state.initValue}
+                    currentValue={this.state.currentValue}
+                    editFinished = {this.editFinished }
+                    />
+                </div>
         } else {
             return (
-                <div className={"hall_info__div_template"}>
+                <div>
                     <Popup open={this.state.error}>
                         <div className="pop_up_custom_body">{this.state.message}</div>
                     </Popup>
-                    <IpDiv
-                        onEdit = {this.onEdit}
-                        value = {this.state.currentValue}
-                    />
+                    <div className={"hall_info__div_template"} onDoubleClick={this.onEdit}>
+                        {this.props.cellInfo.value}
+                    </div>
                 </div>
             )
         }
     }
 }
-
-function mapStateToProps (state){
-    return({
-        error: state.hallInfo.error
-    });
-};
 
 export default CommonIpInput;

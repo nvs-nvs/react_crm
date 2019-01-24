@@ -14,20 +14,20 @@ function inArray(needle, haystack) {
  * */
 const onlyNumbers = function(e) {
     if (inArray(e.which, [
-                "0",
-                "8",
-                "44",
-                "48",
-                "49",
-                "50",
-                "51",
-                "52",
-                "53",
-                "54",
-                "55",
-                "56",
-                "57"
-            ])) {
+        "0",
+        "8",
+        "44",
+        "48",
+        "49",
+        "50",
+        "51",
+        "52",
+        "53",
+        "54",
+        "55",
+        "56",
+        "57"
+    ])) {
         return true;
     }
     return false;
@@ -109,4 +109,3 @@ export {
     onlyNumbers,
     validateIpAddress
 }
-

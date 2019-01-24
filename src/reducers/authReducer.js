@@ -34,22 +34,22 @@ const authReducer = function(state = initialState, {type, payload}) {
                 ...state,
                 isFetching: true,
                 error: false,
-                message: ''
+                message: '',
+                isAuthentificated: false
             };
             
         case `${LOGIN}_SUCCESS`:
             return {
                 ...state,
                 isAuthentificated: payload.data && payload.data.auth ? !isEmpty(
-                    payload.data) : false,
+                    payload.data.user) : false,
                 isFetching: false,
-                error: payload.data.error,
-                message: payload.data.message,
+                error: false,
+                message: '',
             };
             
         case `${LOGIN}_FAIL`:
             localStorage.clear();
-            
             return {
                 ...state,
                 isAuthentificated: false,

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import VipDiv from './VipDiv';
 import VipInput from './VipInput';
 import { textToInfoKind, textToKind } from '../../../../../helpers/common';
 import {config} from '../../../../../config';
@@ -16,20 +15,15 @@ class CommonVipInput extends Component{
             isUpdating: false,
             currentValue: this.props.cellInfo.value,
             initValue: this.props.cellInfo.value,
-            row : {
-                cli_id: this.props.cellInfo.row.cli_id,
-                mac_addr: this.props.cellInfo.row.mac_addr,
-                ip: this.props.cellInfo.row.ip,
-                kind: textToKind(this.props.cellInfo.row.kind),
-                info_kind: textToInfoKind(this.props.cellInfo.row.info_kind),
-                vip: this.props.cellInfo.row.vip,
-                template_name: this.props.cellInfo.row.template_name,
-                soft_version: this.props.cellInfo.row.soft_version,
-            }
+            row: this.props.getRow(this.props.cellInfo)
         };
     }
     
-    onEdit = e => this.setState({edit: true});
+    onEdit = e => this.setState({
+        edit: true,
+        initValue: this.props.cellInfo.value,
+        currentValue: this.props.cellInfo.value,
+    });
     
     editFinished = e => this.setState({
         edit: false,
@@ -52,7 +46,7 @@ class CommonVipInput extends Component{
                 'Content-Type': 'application/json',
             },
             data: {
-                updatedRow: {...this.state.row, vip : this.state.currentValue}
+                updatedRow: {...this.props.getRow(this.props.cellInfo), vip : this.state.currentValue}
             },
         }).then(response => {
                 this.setState({
@@ -60,7 +54,7 @@ class CommonVipInput extends Component{
                     error: false,
                     isUpdating : false,
                 });
-                this.props.updateTable({...this.state.row, vip : this.state.currentValue}, this.props.cellInfo.index);
+                this.props.updateTable(this.state.currentValue, this.props.cellInfo);
             },
             (error) => {
                 this.setState({
@@ -88,14 +82,13 @@ class CommonVipInput extends Component{
             />
         } else {
             return (
-                <div className={"hall_info__div_template"}>
+                <div className={"empty_editable_item"}>
                     <Popup open={this.state.error}>
                         <div className="pop_up_custom_body">{this.state.message}</div>
                     </Popup>
-                    <VipDiv
-                        onEdit = {this.onEdit}
-                        value = {this.state.currentValue}
-                    />
+                    <div className={"empty_editable_item"} onDoubleClick={this.onEdit}>
+                        {this.props.cellInfo.value === 1 ? 'Да' : 'Нет'}
+                    </div>
                 </div>
             )
         }

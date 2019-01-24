@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import KindDiv from './KindDiv';
 import KindInput from './KindInput';
 import {
     kindToText,
@@ -18,22 +17,17 @@ class CommonSelectKind extends Component{
             error:false,
             message:'',
             isUpdating: false,
-            currentValue: textToKind(this.props.cellInfo.value),
-            initValue: textToKind(this.props.cellInfo.value),
-            row : {
-                cli_id: this.props.cellInfo.row.cli_id,
-                mac_addr: this.props.cellInfo.row.mac_addr,
-                ip: this.props.cellInfo.row.ip,
-                kind: textToKind(this.props.cellInfo.row.kind),
-                info_kind: textToInfoKind(this.props.cellInfo.row.info_kind),
-                vip: this.props.cellInfo.row.vip,
-                template_name: this.props.cellInfo.row.template_name,
-                soft_version: this.props.cellInfo.row.soft_version,
-            }
+            currentValue: this.props.cellInfo.value,
+            initValue: this.props.cellInfo.value,
+            row: this.props.getRow(this.props.cellInfo)
         };
     }
     
-    onEdit = e => this.setState({edit: true});
+    onEdit = e => this.setState({
+        edit: true,
+        initValue: this.props.cellInfo.value,
+        currentValue: this.props.cellInfo.value,
+    });
     
     editFinished = e => this.setState({
         edit: false,
@@ -56,7 +50,8 @@ class CommonSelectKind extends Component{
                 'Content-Type': 'application/json',
             },
             data: {
-                updatedRow: {...this.state.row, kind : this.state.currentValue}
+                updatedRow: {...this.props.getRow(this.props.cellInfo), kind : this.state.currentValue},
+                old_kind: this.props.cellInfo.row.kind
             },
         }).then(response => {
                 this.setState({
@@ -64,7 +59,7 @@ class CommonSelectKind extends Component{
                     error: false,
                     isUpdating : false,
                 });
-                this.props.updateTable({...this.state.row, kind : this.state.currentValue}, this.props.cellInfo.index);
+                this.props.updateTable(this.state.currentValue, this.props.cellInfo);
             },
             (error) => {
                 this.setState({
@@ -92,14 +87,13 @@ class CommonSelectKind extends Component{
             />
         } else {
             return (
-                <div className={"hall_info__div_template"}>
+                <div className={"empty_editable_item"}>
                     <Popup open={this.state.error}>
                         <div className="pop_up_custom_body">{this.state.message}</div>
                     </Popup>
-                    <KindDiv
-                        onEdit = {this.onEdit}
-                        value = {kindToText(this.state.currentValue)}
-                    />
+                    <div className={"empty_editable_item"} onDoubleClick={this.onEdit}>
+                        {kindToText(this.props.cellInfo.value)}
+                    </div>
                 </div>
             )
         }

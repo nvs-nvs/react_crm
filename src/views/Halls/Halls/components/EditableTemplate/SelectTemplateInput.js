@@ -62,9 +62,8 @@ class SelectTemplateInput extends Component{
                     </Popup>
                     <FormGroup>
                         <Input
-                            value = {this.props.currentValue}
+                            value = {this.props.cellInfo.value}
                             onChange={this.props.onChange}
-                            className={"hall_info__select_template"}
                             type="select">
                             {this.state.isFetching ? []: templatesWithFirstEmpty}
                         </Input>
